@@ -8,6 +8,11 @@ build.py ― 議会一般質問ダッシュボードのビルド。
 
 データソース（config + 号別JSON）から、表示用の records / meta を組み立て、
 src/render_html.render() でHTMLを生成する。表示ロジックとデータを分離している。
+
+録画配信リンクは data/videos.json（scripts/build_video_map.py が生成する
+「号×議員→録画URL」の突合表）を読み込み、質問ごとに議員別の個別URLを割り当てる。
+突合できない場合や videos.json が無い場合は、従来どおり号レベルの一律リンクに
+フォールバックする。
 """
 import json, glob, os, csv, datetime, sys
 
@@ -25,6 +30,14 @@ def load_sources():
         issues.append(json.load(open(p, encoding="utf-8")))
     issues.sort(key=lambda d: d["issue"])
     return config, issues
+
+
+def load_videos():
+    """data/videos.json（号×議員→録画URLの突合表）を読み込む。無ければ空。"""
+    p = os.path.join(ROOT, "data", "videos.json")
+    if os.path.exists(p):
+        return json.load(open(p, encoding="utf-8"))
+    return {}
 
 
 def build_meta(config, issues, records=None):
@@ -80,17 +93,23 @@ def build_meta(config, issues, records=None):
         "sessions": sessions,
         "roster": roster,
         "note": config.get("publication_rule", ""),
+        "theme_order": config.get("default_theme_order", "config"),
         "build_date": BUILD_DATE,
     }
 
 
-def build_records(issues):
+def build_records(issues, videos=None):
+    videos = videos or {}
     records = []
     rid = 0
     for d in issues:
         iss = d["issue"]
         links = d["links"]
+        issue_video = links.get("video", "")          # 号レベル（従来の一律リンク）
+        vmap = videos.get(str(iss), {})               # {議員名: {result_url, play_url, ...}}
         for m in d["members"]:
+            entry = vmap.get(m["name"])
+            member_video = entry["result_url"] if entry else issue_video
             for q in m["questions"]:
                 rid += 1
                 rec = {
@@ -100,7 +119,8 @@ def build_records(issues):
                     "q_num": q["n"], "text": q["title"], "theme": q["theme"],
                     "published": q["published"], "page": m["page"],
                     "minutes": links.get("minutes", ""), "bulletin": links.get("bulletin_pdf", ""),
-                    "video": links.get("video", ""),
+                    "video": member_video,            # 個別（なければ従来の一律リンク）
+                    "video_issue": issue_video,       # 号レベルは従来の一律を維持
                 }
                 if q["published"] and q.get("q"):
                     rec["qa"] = {
@@ -204,14 +224,18 @@ def write_open_data(config, issues, records):
 
 def main():
     config, issues = load_sources()
-    records = build_records(issues)
+    videos = load_videos()
+    records = build_records(issues, videos)
     meta = build_meta(config, issues, records)
     n = write_html(records, meta)
     write_open_data(config, issues, records)
     pub = sum(1 for r in records if r["published"])
+    # 突合状況の目安：質問行のうち個別録画に当たった割合。
+    linked = sum(1 for r in records if r["video"] and r["video"] != r.get("video_issue"))
     print(f"build OK  ({BUILD_DATE})")
     print(f"  docs/index.html  {n:,} bytes")
     print(f"  records {len(records)} / published {pub} / verbatim {sum(1 for r in records if r['qa'])}")
+    print(f"  video linked (個別) {linked} / {len(records)}")
     print(f"  open data -> docs/data/ (questions.csv/json, members.csv, themes.csv, issues.csv)")
 
 

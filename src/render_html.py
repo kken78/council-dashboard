@@ -457,7 +457,7 @@ function roleBadge(m){const i=ROSTER_BY[m]||{};return i.role?`<span class=\"role
 
 // sessions sorted
 const sessions=[...new Set(R.map(r=>r.issue))].sort((a,b)=>a-b);
-const ISSUE={};R.forEach(r=>{if(!ISSUE[r.issue])ISSUE[r.issue]={issue:r.issue,session:r.session,pub:r.pub_date,bulletin:r.bulletin,minutes:r.minutes,video:r.video};});
+const ISSUE={};R.forEach(r=>{if(!ISSUE[r.issue])ISSUE[r.issue]={issue:r.issue,session:r.session,pub:r.pub_date,bulletin:r.bulletin,minutes:r.minutes,video:r.video_issue};});
 const sessLabel=i=>{const r=R.find(x=>x.issue===i);return r.session;};
 const sessShort=i=>{const r=R.find(x=>x.issue===i);return r.session.replace('定例会議','').replace('定例会','').replace('令和','R').replace('年','.').replace('月','');};
 
@@ -479,7 +479,7 @@ function renderOverview(){
   const tc=groupCount(R,'theme');
   const max=Math.max(...Object.values(tc));
   const totalQ=R.length;
-  const orderedT=TORDER.slice();  // テーマの定義順（件数では並べない）
+  const orderedT=TORDER.slice();  // 表示順は DB.themeOrder（config の default_theme_order。既定＝件数の多い順）
   $('#themeBars').innerHTML=orderedT.map(t=>{
     const n=tc[t]||0;const pct=totalQ?Math.round(n/totalQ*100):0;
     return `<div class="barrow clickable" data-theme="${t}" title="${t}の質問を見る"><div class="lab">${t}</div><div class="bartrack"><div class="barfill" style="width:${n/max*100}%;background:${TCOLOR[t]}"></div></div><div class="cnt num">${n}</div></div>`;
@@ -802,10 +802,24 @@ def render(records, meta):
         return "#231B26"
     theme_text = {t: _text_color(c) for t, c in THEME_COLOR.items()}
 
+    # テーマの並び順。config.json の default_theme_order を build.py が meta["theme_order"] に渡す。
+    #   "count"  … 件数の多い順（同数は THEME_ORDER の定義順で安定）。棒グラフ・議員×テーマ表が読みやすい既定。
+    #   "config" … THEME_ORDER の定義順のまま（件数では並べない）。
+    # テーマは人ではないため、件数順に並べても個人の序列化にはならない、という整理に基づく。
+    # 色はテーマIDに紐づく（THEME_COLOR）ので、並べ替えても色は変わらない。他自治体は config で選べる。
+    theme_order_mode = (meta or {}).get("theme_order", "config")
+    if theme_order_mode == "count":
+        _tc = {}
+        for _r in records:
+            _tc[_r["theme"]] = _tc.get(_r["theme"], 0) + 1
+        theme_order = sorted(THEME_ORDER, key=lambda t: (-_tc.get(t, 0), THEME_ORDER.index(t)))
+    else:
+        theme_order = list(THEME_ORDER)
+
     payload = {
         "records": records,
         "meta": meta,
-        "themeOrder": THEME_ORDER,
+        "themeOrder": theme_order,
         "themeColor": THEME_COLOR,
         "themeTextColor": theme_text,
         "roster": meta["roster"],
