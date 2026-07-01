@@ -90,7 +90,7 @@ h2.sec:first-child{margin-top:6px}
 .stat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 16px 14px;box-shadow:var(--shadow)}
 .stat .v{font-size:30px;font-weight:800;line-height:1;color:var(--plum)}
 .stat .v small{font-size:14px;font-weight:700;color:var(--ink-2);margin-left:3px}
-.stat .l{font-size:12.5px;color:var(--ink-2);margin-top:7px;font-weight:600}
+.stat .l{font-size:12.5px;color:var(--ink-2);margin-top:7px;font-weight:600;font-variant-numeric:tabular-nums}
 .stat .x{font-size:11.5px;color:var(--muted);margin-top:2px}
 
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:var(--shadow);min-width:0}
@@ -116,11 +116,11 @@ h2.sec:first-child{margin-top:6px}
 @media(max-width:520px){.barrow{grid-template-columns:96px 1fr 46px;font-size:12px}}
 
 /* Session timeline */
-.tl{display:flex;align-items:stretch;gap:10px;max-width:100%;padding:6px 0 2px;margin-top:8px}
+.tl{display:flex;align-items:stretch;gap:10px;max-width:540px;padding:6px 0 2px;margin-top:8px}
 .tlcol{flex:1;display:grid;grid-template-rows:20px 130px auto;align-items:end;justify-items:center;gap:6px;min-width:0}
 .tlbar{width:70%;max-width:38px;background:var(--plum);border-radius:4px 4px 0 0;position:relative;transition:height .6s}
 .tlbar .pub{position:absolute;left:0;right:0;bottom:0;background:rgba(255,255,255,.34)}
-.tlcap{align-self:start;font-size:10.5px;color:var(--ink-2);text-align:center;line-height:1.25;font-weight:600}
+.tlcap{align-self:start;font-size:10.5px;color:var(--ink-2);text-align:center;line-height:1.25;font-weight:600;font-variant-numeric:tabular-nums}
 .tlnum{font-size:13px;font-weight:800;color:var(--plum)}
 @media(max-width:640px){
   .tl{overflow-x:auto;overscroll-behavior-inline:contain;scroll-snap-type:x proximity;padding-bottom:10px;-webkit-overflow-scrolling:touch}
@@ -140,13 +140,13 @@ h2.sec:first-child{margin-top:6px}
 .mcard:hover{border-color:var(--plum);box-shadow:var(--shadow)}
 .mcard .mh{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
 .mcard .mn{font-size:16px;font-weight:800}
-.mcard .mk{font-size:11px;color:var(--muted);font-weight:600}
+.mcard .mk{font-size:11px;color:var(--muted);font-weight:600;font-variant-numeric:tabular-nums}
 .mcard .mtot{font-size:22px;font-weight:800;color:var(--plum)}
 .mtot small{font-size:11px;color:var(--ink-2);font-weight:700}
 .stack{display:flex;gap:1px;height:10px;border-radius:5px;overflow:hidden;margin:11px 0 8px;background:var(--paper-2)}
 .stack i{display:block;height:100%}
 .chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
-.chip{font-size:10.5px;padding:2px 7px;border-radius:999px;background:var(--paper-2);color:var(--ink-2);font-weight:600}
+.chip{font-size:10.5px;padding:2px 7px;border-radius:999px;background:var(--paper-2);color:var(--ink-2);font-weight:600;font-variant-numeric:tabular-nums}
 
 /* Matrix */
 .mxwrap{overflow-x:visible;border:1px solid var(--line);border-radius:var(--r);background:var(--card);box-shadow:var(--shadow)}
@@ -220,7 +220,7 @@ table.mx tbody th{background:var(--paper-2);text-align:right;padding:6px 7px;fon
 .sheet{background:var(--paper);border-radius:18px;max-width:760px;width:100%;box-shadow:0 24px 60px rgba(40,10,40,.3);overflow:hidden}
 .sheet .sh{background:var(--plum-d);color:#fff;padding:18px 22px;position:relative}
 .sheet .sh h3{margin:0;font-size:21px;font-weight:800}
-.sheet .sh .sk{font-size:12px;color:#EAD0E0;margin-top:3px;font-weight:600}
+.sheet .sh .sk{font-size:12px;color:#EAD0E0;margin-top:3px;font-weight:600;font-variant-numeric:tabular-nums}
 .sheet .sh .sm{display:flex;gap:18px;margin-top:12px}
 .sheet .sh .sm div{font-size:11.5px;color:#EAD0E0}
 .sheet .sh .sm b{display:block;font-size:20px;font-weight:800;color:#fff}
@@ -263,7 +263,7 @@ table.mx tbody th{background:var(--paper-2);text-align:right;padding:6px 7px;fon
 .qexp.open{background:var(--plum-l)}
 .qdetail{margin-top:10px;padding:13px 14px;background:var(--paper-2);border-radius:10px;border:1px solid var(--line)}
 .qa-q,.qa-a{display:flex;gap:9px;font-size:13px;line-height:1.65;margin:0 0 9px}
-.qa-atitle{display:flex;gap:9px;font-size:13px;line-height:1.6;margin:0 0 9px;font-weight:600}
+.qa-atitle{display:flex;gap:9px;font-size:13px;line-height:1.6;margin:0 0 9px;font-weight:600;font-variant-numeric:tabular-nums}
 .qa-atitle span:last-child{color:#9a7b3a;white-space:pre-wrap}
 .qa-o{display:flex;gap:9px;font-size:12.5px;line-height:1.6;margin:10px 0 4px;padding-top:10px;border-top:1px dashed var(--line-2)}
 .qa-o span:last-child{color:var(--ink-2);white-space:pre-wrap}
@@ -291,7 +291,7 @@ table.mx tbody th{background:var(--paper-2);text-align:right;padding:6px 7px;fon
 .bchip{display:flex;flex-direction:column;gap:1px;text-decoration:none;border:1px solid var(--line-2);border-radius:10px;padding:10px 13px;background:#fff;transition:border-color .15s,transform .15s,box-shadow .15s}
 .bchip:hover{border-color:var(--plum);transform:translateY(-1px);box-shadow:var(--shadow)}
 .bchip .bn{font-weight:800;color:var(--plum);font-size:14px}
-.bchip .bs{font-size:12.5px;color:var(--ink);font-weight:600}
+.bchip .bs{font-size:12.5px;color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
 .bchip .bd{font-size:11px;color:var(--muted)}
 .inlink{color:var(--plum);font-weight:700}
 a.tlcap{text-decoration:none;color:var(--ink-2)}
@@ -459,7 +459,7 @@ function roleBadge(m){const i=ROSTER_BY[m]||{};return i.role?`<span class=\"role
 const sessions=[...new Set(R.map(r=>r.issue))].sort((a,b)=>a-b);
 const ISSUE={};R.forEach(r=>{if(!ISSUE[r.issue])ISSUE[r.issue]={issue:r.issue,session:r.session,pub:r.pub_date,bulletin:r.bulletin,minutes:r.minutes,video:r.video_issue};});
 const sessLabel=i=>{const r=R.find(x=>x.issue===i);return r.session;};
-const sessShort=i=>{const r=R.find(x=>x.issue===i);return r.session.replace('定例会議','').replace('定例会','').replace('令和','R').replace('年','.').replace('月','');};
+const sessShort=i=>{const r=R.find(x=>x.issue===i);const m=r.session.match(/令和(\d+)年(\d+)月/);return m?`R${m[1]}.${m[2].padStart(2,'0')}`:r.session.replace('定例会議','').replace('定例会','').replace('令和','R').replace('年','.').replace('月','');};
 
 // 一般質問を行った議員（議席番号順）
 const members=ACTIVE.map(r=>r.member);
