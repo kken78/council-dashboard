@@ -88,6 +88,16 @@ https://kken78.github.io/council-dashboard/
 
 公開のかたち（機械判読データ＋静的サイト＋自動更新）は、官公庁が分散公開していた情報を第三者が整理して二次利用可能にした「[国会議案データベース](https://smartnews-smri.com/research/research-1127/)」（スマートニュース）を参考にしています。
 
+## オープンデータの活用例
+
+`docs/data/` の機械判読データ（CC BY 4.0）は、本ダッシュボード以外からも利用できます。
+
+- [統合MCPサーバー](https://github.com/kken78/hino-council-search/tree/main/mcp)
+  （hino-council-search リポジトリ内）— 本ダッシュボードの questions.json と
+  会議録の発言索引を、Claude 等のMCP対応AIクライアントから横断参照するもの。
+  ダッシュボード側のコード変更なしに、公開データのみで実装されている。
+  フォーク先の自治体でも、データURLの差し替えで利用できる（詳細は同READMEを参照）。
+
 ## 設計で参考にした指針
 
 画面の設計にあたっては、デジタル庁「[ダッシュボードデザインの実践ガイドブック](https://www.digital.go.jp/resources/dashboard-guidebook)」を参考にしています。色やテンプレート（Power BI）への準拠ではなく、**要件定義（誰が・なぜ・何を見るか）、情報の選別、過度な装飾を避けること、提示型と探索型の区別**といった設計プロセスと情報整理の考え方を取り入れています。ガイドブックを物差しにしたUI/UX・情報整理・情報管理のレビューと、その修正計画は [docs/DESIGN_REVIEW.md](docs/DESIGN_REVIEW.md) にまとめています。
