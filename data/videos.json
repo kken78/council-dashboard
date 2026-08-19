@@ -1065,5 +1065,98 @@
       "play_url": "https://hino-town.stream.jfit.co.jp/?tpl=play_vod&inquiry_id=671",
       "result_url": "https://hino-town.stream.jfit.co.jp/?tpl=gikai_result&gikai_day_id=261&category_id=3&inquiry_id=671"
     }
+  },
+  "36": {
+    "中西 佳子": {
+      "category_id": 3,
+      "gikai_day_id": 268,
+      "inquiry_id": 694,
+      "play_url": "https://hino-town.stream.jfit.co.jp/?tpl=play_vod&inquiry_id=694",
+      "result_url": "https://hino-town.stream.jfit.co.jp/?tpl=gikai_result&gikai_day_id=268&category_id=3&inquiry_id=694"
+    },
+    "加藤 和幸": {
+      "category_id": 3,
+      "gikai_day_id": 268,
+      "inquiry_id": 692,
+      "play_url": "https://hino-town.stream.jfit.co.jp/?tpl=play_vod&inquiry_id=692",
+      "result_url": "https://hino-town.stream.jfit.co.jp/?tpl=gikai_result&gikai_day_id=268&category_id=3&inquiry_id=692"
+    },
+    "山本 秀喜": {
+      "category_id": 3,
+      "gikai_day_id": 267,
+      "inquiry_id": 690,
+      "play_url": "https://hino-town.stream.jfit.co.jp/?tpl=play_vod&inquiry_id=690",
+      "result_url": "https://hino-town.stream.jfit.co.jp/?tpl=gikai_result&gikai_day_id=267&category_id=3&inquiry_id=690"
+    },
+    "川東 昭男": {
+      "category_id": 3,
+      "gikai_day_id": 267,
+      "inquiry_id": 685,
+      "play_url": "https://hino-town.stream.jfit.co.jp/?tpl=play_vod&inquiry_id=685",
+      "result_url": "https://hino-town.stream.jfit.co.jp/?tpl=gikai_result&gikai_day_id=267&category_id=3&inquiry_id=685"
+    },
+    "後藤 勇樹": {
+      "category_id": 5,
+      "gikai_day_id": 266,
+      "inquiry_id": 684,
+      "play_url": "https://hino-town.stream.jfit.co.jp/?tpl=play_vod&inquiry_id=684",
+      "result_url": "https://hino-town.stream.jfit.co.jp/?tpl=gikai_result&gikai_day_id=266&category_id=5&inquiry_id=684"
+    },
+    "松田 洋子": {
+      "category_id": 3,
+      "gikai_day_id": 267,
+      "inquiry_id": 691,
+      "play_url": "https://hino-town.stream.jfit.co.jp/?tpl=play_vod&inquiry_id=691",
+      "result_url": "https://hino-town.stream.jfit.co.jp/?tpl=gikai_result&gikai_day_id=267&category_id=3&inquiry_id=691"
+    },
+    "柚木 記久雄": {
+      "category_id": 3,
+      "gikai_day_id": 268,
+      "inquiry_id": 693,
+      "play_url": "https://hino-town.stream.jfit.co.jp/?tpl=play_vod&inquiry_id=693",
+      "result_url": "https://hino-town.stream.jfit.co.jp/?tpl=gikai_result&gikai_day_id=268&category_id=3&inquiry_id=693"
+    },
+    "福永 晃仁": {
+      "category_id": 5,
+      "gikai_day_id": 266,
+      "inquiry_id": 683,
+      "play_url": "https://hino-town.stream.jfit.co.jp/?tpl=play_vod&inquiry_id=683",
+      "result_url": "https://hino-town.stream.jfit.co.jp/?tpl=gikai_result&gikai_day_id=266&category_id=5&inquiry_id=683"
+    },
+    "西澤 正治": {
+      "category_id": 3,
+      "gikai_day_id": 267,
+      "inquiry_id": 687,
+      "play_url": "https://hino-town.stream.jfit.co.jp/?tpl=play_vod&inquiry_id=687",
+      "result_url": "https://hino-town.stream.jfit.co.jp/?tpl=gikai_result&gikai_day_id=267&category_id=3&inquiry_id=687"
+    },
+    "谷口 智哉": {
+      "category_id": 5,
+      "gikai_day_id": 266,
+      "inquiry_id": 682,
+      "play_url": "https://hino-town.stream.jfit.co.jp/?tpl=play_vod&inquiry_id=682",
+      "result_url": "https://hino-town.stream.jfit.co.jp/?tpl=gikai_result&gikai_day_id=266&category_id=5&inquiry_id=682"
+    },
+    "野矢 貴之": {
+      "category_id": 3,
+      "gikai_day_id": 267,
+      "inquiry_id": 689,
+      "play_url": "https://hino-town.stream.jfit.co.jp/?tpl=play_vod&inquiry_id=689",
+      "result_url": "https://hino-town.stream.jfit.co.jp/?tpl=gikai_result&gikai_day_id=267&category_id=3&inquiry_id=689"
+    },
+    "錦戸 由佳": {
+      "category_id": 3,
+      "gikai_day_id": 267,
+      "inquiry_id": 686,
+      "play_url": "https://hino-town.stream.jfit.co.jp/?tpl=play_vod&inquiry_id=686",
+      "result_url": "https://hino-town.stream.jfit.co.jp/?tpl=gikai_result&gikai_day_id=267&category_id=3&inquiry_id=686"
+    },
+    "髙橋 源三郎": {
+      "category_id": 3,
+      "gikai_day_id": 267,
+      "inquiry_id": 688,
+      "play_url": "https://hino-town.stream.jfit.co.jp/?tpl=play_vod&inquiry_id=688",
+      "result_url": "https://hino-town.stream.jfit.co.jp/?tpl=gikai_result&gikai_day_id=267&category_id=3&inquiry_id=688"
+    }
   }
 }
