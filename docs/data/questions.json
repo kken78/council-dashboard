@@ -70,7 +70,9 @@
    "order": 2,
    "q_num": 1,
    "theme": "まちづくり・公園・空き家",
-   "sub_themes": [],
+   "sub_themes": [
+    "防災・安全"
+   ],
    "published": true,
    "title": "大谷公園の果たす役割について",
    "pub_date": "2023-08-15",
@@ -167,7 +169,9 @@
    "order": 5,
    "q_num": 1,
    "theme": "産業・観光・文化財",
-   "sub_themes": [],
+   "sub_themes": [
+    "農林業"
+   ],
    "published": true,
    "title": "日野菜振興の現状と今後の目標は？",
    "pub_date": "2023-08-15",
@@ -402,7 +406,9 @@
    "order": 9,
    "q_num": 3,
    "theme": "農林業",
-   "sub_themes": [],
+   "sub_themes": [
+    "子育て・教育"
+   ],
    "published": true,
    "title": "「健康と有機農業のまちづくり」を目指して",
    "pub_date": "2023-08-15",
@@ -517,7 +523,9 @@
    "order": 12,
    "q_num": 1,
    "theme": "行財政・行政運営",
-   "sub_themes": [],
+   "sub_themes": [
+    "産業・観光・文化財"
+   ],
    "published": true,
    "title": "今後の財源確保と行政経営を問う",
    "pub_date": "2023-08-15",
@@ -623,7 +631,9 @@
    "order": 2,
    "q_num": 1,
    "theme": "行財政・行政運営",
-   "sub_themes": [],
+   "sub_themes": [
+    "子育て・教育"
+   ],
    "published": true,
    "title": "公共施設の改修および長寿命化計画と財政運営について",
    "pub_date": "2023-11-15",
@@ -803,7 +813,9 @@
    "order": 6,
    "q_num": 1,
    "theme": "防災・安全",
-   "sub_themes": [],
+   "sub_themes": [
+    "交通・公共交通"
+   ],
    "published": true,
    "title": "交通安全対策（自転車）について",
    "pub_date": "2023-11-15",
@@ -826,7 +838,9 @@
    "order": 6,
    "q_num": 2,
    "theme": "まちづくり・公園・空き家",
-   "sub_themes": [],
+   "sub_themes": [
+    "防災・安全"
+   ],
    "published": true,
    "title": "「道の駅」「防災道の駅」について町の見解は",
    "pub_date": "2023-11-15",
@@ -1047,7 +1061,9 @@
    "order": 11,
    "q_num": 1,
    "theme": "農林業",
-   "sub_themes": [],
+   "sub_themes": [
+    "自治・住民参画"
+   ],
    "published": true,
    "title": "農村型地域運営組織（農村RMO）への伴走支援を問う",
    "pub_date": "2023-11-15",
@@ -1121,7 +1137,9 @@
    "order": 1,
    "q_num": 2,
    "theme": "行財政・行政運営",
-   "sub_themes": [],
+   "sub_themes": [
+    "産業・観光・文化財"
+   ],
    "published": true,
    "title": "今年のふるさと納税の現状は？",
    "pub_date": "2024-02-15",
@@ -1292,7 +1310,9 @@
    "order": 4,
    "q_num": 2,
    "theme": "自治・住民参画",
-   "sub_themes": [],
+   "sub_themes": [
+    "福祉・健康・医療"
+   ],
    "published": true,
    "title": "最高裁による「性同一性障害特例法」の違憲判決について町の見解を問う",
    "pub_date": "2024-02-15",
@@ -1662,7 +1682,9 @@
    "order": 11,
    "q_num": 2,
    "theme": "子育て・教育",
-   "sub_themes": [],
+   "sub_themes": [
+    "自治・住民参画"
+   ],
    "published": true,
    "title": "社会教育の人材育成と体制整備",
    "pub_date": "2024-02-15",
@@ -1892,7 +1914,9 @@
    "order": 5,
    "q_num": 1,
    "theme": "子育て・教育",
-   "sub_themes": [],
+   "sub_themes": [
+    "まちづくり・公園・空き家"
+   ],
    "published": true,
    "title": "日野町スポーツ協会の提案書に対する町の対応について",
    "pub_date": "2024-05-15",
@@ -2031,7 +2055,9 @@
    "order": 8,
    "q_num": 1,
    "theme": "福祉・健康・医療",
-   "sub_themes": [],
+   "sub_themes": [
+    "子育て・教育"
+   ],
    "published": true,
    "title": "介護・障害福祉・保育所での人手不足について",
    "pub_date": "2024-05-15",
@@ -2077,7 +2103,9 @@
    "order": 9,
    "q_num": 1,
    "theme": "交通・公共交通",
-   "sub_themes": [],
+   "sub_themes": [
+    "福祉・健康・医療"
+   ],
    "published": true,
    "title": "わたむき自動車プロジェクト「チョイソコひの」について",
    "pub_date": "2024-05-15",
@@ -2100,7 +2128,9 @@
    "order": 9,
    "q_num": 2,
    "theme": "産業・観光・文化財",
-   "sub_themes": [],
+   "sub_themes": [
+    "交通・公共交通"
+   ],
    "published": true,
    "title": "綿向山に急増する冬季の登山者駐車場について",
    "pub_date": "2024-05-15",
@@ -2333,7 +2363,9 @@
    "order": 2,
    "q_num": 1,
    "theme": "環境",
-   "sub_themes": [],
+   "sub_themes": [
+    "農林業"
+   ],
    "published": true,
    "title": "森林環境譲与税について",
    "pub_date": "2024-08-15",
@@ -2770,7 +2802,9 @@
    "order": 10,
    "q_num": 2,
    "theme": "農林業",
-   "sub_themes": [],
+   "sub_themes": [
+    "行財政・行政運営"
+   ],
    "published": true,
    "title": "農業集落排水（農村下水道）の今後について",
    "pub_date": "2024-08-15",
@@ -2839,7 +2873,9 @@
    "order": 1,
    "q_num": 1,
    "theme": "自治・住民参画",
-   "sub_themes": [],
+   "sub_themes": [
+    "子育て・教育"
+   ],
    "published": true,
    "title": "地域の支援機関として公民館のリソース確保は？",
    "pub_date": "2024-11-15",
@@ -3005,7 +3041,9 @@
    "order": 5,
    "q_num": 1,
    "theme": "子育て・教育",
-   "sub_themes": [],
+   "sub_themes": [
+    "防災・安全"
+   ],
    "published": true,
    "title": "幼稚園・保育園の安全対策について",
    "pub_date": "2024-11-15",
@@ -3125,7 +3163,9 @@
    "order": 7,
    "q_num": 2,
    "theme": "環境",
-   "sub_themes": [],
+   "sub_themes": [
+    "子育て・教育"
+   ],
    "published": true,
    "title": "日野町の環境施策「生ゴミ堆肥化事業」について",
    "pub_date": "2024-11-15",
@@ -3268,7 +3308,9 @@
    "order": 10,
    "q_num": 1,
    "theme": "行財政・行政運営",
-   "sub_themes": [],
+   "sub_themes": [
+    "福祉・健康・医療"
+   ],
    "published": true,
    "title": "「マイナンバーカード」「マイナ保険証」について",
    "pub_date": "2024-11-15",
@@ -3448,7 +3490,9 @@
    "order": 13,
    "q_num": 2,
    "theme": "産業・観光・文化財",
-   "sub_themes": [],
+   "sub_themes": [
+    "行財政・行政運営"
+   ],
    "published": true,
    "title": "文化財の保存活用に広く利用できる基金の創設を",
    "pub_date": "2024-11-15",
@@ -3665,7 +3709,9 @@
    "order": 4,
    "q_num": 2,
    "theme": "防災・安全",
-   "sub_themes": [],
+   "sub_themes": [
+    "交通・公共交通"
+   ],
    "published": true,
    "title": "通学歩道の除雪対策の準備は万全か",
    "pub_date": "2025-02-15",
@@ -3757,7 +3803,9 @@
    "order": 6,
    "q_num": 2,
    "theme": "自治・住民参画",
-   "sub_themes": [],
+   "sub_themes": [
+    "まちづくり・公園・空き家"
+   ],
    "published": true,
    "title": "町内各字における美化奉仕作業のあり方について",
    "pub_date": "2025-02-15",
@@ -3849,7 +3897,9 @@
    "order": 8,
    "q_num": 2,
    "theme": "福祉・健康・医療",
-   "sub_themes": [],
+   "sub_themes": [
+    "子育て・教育"
+   ],
    "published": true,
    "title": "就学援助制度拡充で子どもの貧困解消を",
    "pub_date": "2025-02-15",
@@ -3960,7 +4010,9 @@
    "order": 10,
    "q_num": 3,
    "theme": "子育て・教育",
-   "sub_themes": [],
+   "sub_themes": [
+    "防災・安全"
+   ],
    "published": true,
    "title": "小・中学校体育館のエアコン整備について",
    "pub_date": "2025-02-15",
@@ -4075,7 +4127,9 @@
    "order": 13,
    "q_num": 2,
    "theme": "交通・公共交通",
-   "sub_themes": [],
+   "sub_themes": [
+    "産業・観光・文化財"
+   ],
    "published": true,
    "title": "国道307号の渋滞緩和に向け、中在寺〜必佐路線の整備を",
    "pub_date": "2025-02-15",
@@ -4338,7 +4392,9 @@
    "order": 6,
    "q_num": 2,
    "theme": "福祉・健康・医療",
-   "sub_themes": [],
+   "sub_themes": [
+    "子育て・教育"
+   ],
    "published": true,
    "title": "日野町におけるネグレクトの実態と対応策について",
    "pub_date": "2025-05-15",
@@ -4361,7 +4417,9 @@
    "order": 7,
    "q_num": 1,
    "theme": "子育て・教育",
-   "sub_themes": [],
+   "sub_themes": [
+    "行財政・行政運営"
+   ],
    "published": true,
    "title": "何故、予算に組み入れない町長肝いり新こども園建設経費？",
    "pub_date": "2025-05-15",
@@ -4615,7 +4673,9 @@
    "order": 12,
    "q_num": 2,
    "theme": "子育て・教育",
-   "sub_themes": [],
+   "sub_themes": [
+    "自治・住民参画"
+   ],
    "published": true,
    "title": "町全体の社会教育マネジメントはどうしてる？",
    "pub_date": "2025-05-15",
@@ -4707,7 +4767,9 @@
    "order": 1,
    "q_num": 2,
    "theme": "交通・公共交通",
-   "sub_themes": [],
+   "sub_themes": [
+    "福祉・健康・医療"
+   ],
    "published": true,
    "title": "「チョイソコひの」運行拡大のための施策はあるのか",
    "pub_date": "2025-08-15",
@@ -5091,7 +5153,9 @@
    "order": 9,
    "q_num": 1,
    "theme": "行財政・行政運営",
-   "sub_themes": [],
+   "sub_themes": [
+    "交通・公共交通"
+   ],
    "published": true,
    "title": "役場北側駐車場における駐車車両について",
    "pub_date": "2025-08-15",
@@ -5114,7 +5178,9 @@
    "order": 9,
    "q_num": 2,
    "theme": "自治・住民参画",
-   "sub_themes": [],
+   "sub_themes": [
+    "防災・安全"
+   ],
    "published": true,
    "title": "区長、町用タブレット端末の費用対効果について",
    "pub_date": "2025-08-15",
@@ -5289,7 +5355,9 @@
    "order": 13,
    "q_num": 1,
    "theme": "福祉・健康・医療",
-   "sub_themes": [],
+   "sub_themes": [
+    "子育て・教育"
+   ],
    "published": true,
    "title": "低所得世帯支援の現状と今後の取り組みを問う",
    "pub_date": "2025-08-15",
@@ -5773,7 +5841,9 @@
    "order": 11,
    "q_num": 2,
    "theme": "子育て・教育",
-   "sub_themes": [],
+   "sub_themes": [
+    "防災・安全"
+   ],
    "published": true,
    "title": "小・中学校体育館のエアコン整備について",
    "pub_date": "2025-11-15",
@@ -5856,7 +5926,9 @@
    "order": 13,
    "q_num": 1,
    "theme": "福祉・健康・医療",
-   "sub_themes": [],
+   "sub_themes": [
+    "自治・住民参画"
+   ],
    "published": true,
    "title": "地域共生社会をつくる重層的支援体制整備とは？",
    "pub_date": "2025-11-15",
@@ -6022,7 +6094,9 @@
    "order": 5,
    "q_num": 2,
    "theme": "防災・安全",
-   "sub_themes": [],
+   "sub_themes": [
+    "農林業"
+   ],
    "published": true,
    "title": "県内のクマ出没状況と日野町の現状・対策を伺う",
    "pub_date": "2026-02-15",
@@ -6206,7 +6280,9 @@
    "order": 9,
    "q_num": 2,
    "theme": "行財政・行政運営",
-   "sub_themes": [],
+   "sub_themes": [
+    "産業・観光・文化財"
+   ],
    "published": true,
    "title": "町のふるさと納税は順調に推移しているのか",
    "pub_date": "2026-02-15",
@@ -6257,7 +6333,9 @@
    "order": 11,
    "q_num": 1,
    "theme": "防災・安全",
-   "sub_themes": [],
+   "sub_themes": [
+    "まちづくり・公園・空き家"
+   ],
    "published": true,
    "title": "安心・安全なまちづくりについて",
    "pub_date": "2026-02-15",
@@ -6303,7 +6381,9 @@
    "order": 12,
    "q_num": 1,
    "theme": "防災・安全",
-   "sub_themes": [],
+   "sub_themes": [
+    "農林業"
+   ],
    "published": true,
    "title": "人家近くまで下りてきたイノシシへの獣害対策は",
    "pub_date": "2026-02-15",
@@ -6363,7 +6443,9 @@
    "order": 1,
    "q_num": 1,
    "theme": "交通・公共交通",
-   "sub_themes": [],
+   "sub_themes": [
+    "福祉・健康・医療"
+   ],
    "published": true,
    "title": "「チョイソコひの」を発展させていくためにはどのような視点が必要か",
    "pub_date": "2026-05-15",
@@ -6520,7 +6602,9 @@
    "order": 5,
    "q_num": 1,
    "theme": "自治・住民参画",
-   "sub_themes": [],
+   "sub_themes": [
+    "子育て・教育"
+   ],
    "published": true,
    "title": "持続可能な公民館運営について",
    "pub_date": "2026-05-15",
@@ -6622,7 +6706,9 @@
    "order": 7,
    "q_num": 2,
    "theme": "子育て・教育",
-   "sub_themes": [],
+   "sub_themes": [
+    "自治・住民参画"
+   ],
    "published": true,
    "title": "公民館開放事業「ひのっこルーム」について",
    "pub_date": "2026-05-15",
@@ -7042,7 +7128,9 @@
    "order": 4,
    "q_num": 1,
    "theme": "農林業",
-   "sub_themes": [],
+   "sub_themes": [
+    "行財政・行政運営"
+   ],
    "published": true,
    "title": "農村下水道の公共下水道への接続について",
    "pub_date": "2026-08-15",
@@ -7070,7 +7158,9 @@
    "order": 4,
    "q_num": 2,
    "theme": "行財政・行政運営",
-   "sub_themes": [],
+   "sub_themes": [
+    "福祉・健康・医療"
+   ],
    "published": true,
    "title": "マイナンバーカードの普及・利活用について",
    "pub_date": "2026-08-15",
@@ -7195,7 +7285,9 @@
    "order": 8,
    "q_num": 1,
    "theme": "自治・住民参画",
-   "sub_themes": [],
+   "sub_themes": [
+    "福祉・健康・医療"
+   ],
    "published": true,
    "title": "行政が主体的に役の整理に取り組むべきでは",
    "pub_date": "2026-08-15",
@@ -7223,7 +7315,9 @@
    "order": 9,
    "q_num": 1,
    "theme": "子育て・教育",
-   "sub_themes": [],
+   "sub_themes": [
+    "福祉・健康・医療"
+   ],
    "published": true,
    "title": "「日野町こども家庭センター」の運営は",
    "pub_date": "2026-08-15",
