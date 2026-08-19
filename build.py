@@ -117,6 +117,7 @@ def build_records(issues, videos=None):
                     "year": d["year"], "month": d["month"], "pub_date": d.get("published_date", ""),
                     "member": m["name"], "kana": m.get("kana", ""), "order": m["order"],
                     "q_num": q["n"], "text": q["title"], "theme": q["theme"],
+                    "subs": list(q.get("sub_themes") or []),   # 副テーマ（絞り込み用。件数集計には使わない）
                     "published": q["published"], "page": m["page"],
                     "minutes": links.get("minutes", ""), "bulletin": links.get("bulletin_pdf", ""),
                     "video": member_video,            # 個別（なければ従来の一律リンク）
@@ -167,12 +168,13 @@ def write_open_data(config, issues, records):
     with open(os.path.join(out, "questions.csv"), "w", encoding="utf-8", newline="") as f:
         w = csv.writer(f)
         w.writerow(["issue", "published_date", "seat", "member", "order", "q_num",
-                    "theme", "published", "title", "answer_title", "has_fulltext",
+                    "theme", "sub_themes", "published", "title", "answer_title", "has_fulltext",
                     "bulletin_pdf", "minutes", "video"])
         seat = {m["name"]: m["seat"] for m in config["members"]}
         for r in records:
             w.writerow([r["issue"], r["pub_date"], seat.get(r["member"], ""), r["member"],
-                        r["order"], r["q_num"], r["theme"], int(r["published"]), r["text"],
+                        r["order"], r["q_num"], r["theme"], ";".join(r["subs"]),
+                        int(r["published"]), r["text"],
                         (r["qa"] or {}).get("at", ""), int(bool(r["qa"])),
                         r["bulletin"], r["minutes"], r["video"]])
 
@@ -180,7 +182,8 @@ def write_open_data(config, issues, records):
     qjson = []
     for r in records:
         item = {"issue": r["issue"], "member": r["member"], "order": r["order"],
-                "q_num": r["q_num"], "theme": r["theme"], "published": r["published"],
+                "q_num": r["q_num"], "theme": r["theme"], "sub_themes": r["subs"],
+                "published": r["published"],
                 "title": r["text"], "pub_date": r["pub_date"], "bulletin": r["bulletin"],
                 "minutes": r["minutes"], "video": r["video"]}
         if r["qa"]:

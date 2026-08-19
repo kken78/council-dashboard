@@ -23,6 +23,17 @@ for path in sorted(glob.glob(os.path.join(ROOT, "data", "issue-*.json"))):
             seen_keys.add(key)
             if q["theme"] not in theme_ids:
                 errors.append(f"{key}: 未知のテーマ '{q['theme']}'")
+            subs = q.get("sub_themes") or []
+            if not isinstance(subs, list):
+                errors.append(f"{key}: sub_themes は配列で書く")
+                subs = []
+            for st in subs:
+                if st not in theme_ids:
+                    errors.append(f"{key}: 未知の副テーマ '{st}'")
+                elif st == q["theme"]:
+                    errors.append(f"{key}: 副テーマが主テーマと同一 '{st}'")
+            if len(set(subs)) != len(subs):
+                errors.append(f"{key}: 副テーマが重複している")
             if q.get("published"):
                 if not q.get("q") or not q.get("a"):
                     errors.append(f"{key}: 掲載なのに問・答が空")

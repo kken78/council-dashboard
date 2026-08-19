@@ -202,6 +202,10 @@ table.mx tbody th{background:var(--paper-2);text-align:right;padding:6px 7px;fon
 }
 .tg{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
 .tg .d{width:8px;height:8px;border-radius:50%}
+.tg-sub{background:transparent!important;border:1px dashed currentColor;font-weight:600;opacity:.9}
+.qgrp-sub{border-style:dashed}
+.qgrp-sub .qgrp-note{display:block;font-size:11.5px;font-weight:500;color:var(--muted);margin-top:3px}
+.tg-sub .sublab{font-size:9.5px;font-weight:800;letter-spacing:.04em;opacity:.8}
 .badge{font-size:10.5px;font-weight:800;padding:2px 8px;border-radius:6px;white-space:nowrap}
 .b-pub{background:var(--plum-l);color:var(--plum-d)}
 .b-non{background:#EFE9E1;color:#8A7F72;border:1px dashed #C9BCAA}
@@ -340,7 +344,7 @@ footer b{color:var(--ink-2)}
   <div class="grid2" style="margin-top:22px">
     <div class="card">
       <h2 class="sec" style="margin-top:0">テーマ別の質問数</h2>
-      <p class="lead" style="margin:-2px 0 12px;font-size:12px">バーをクリックすると、そのテーマの全質問と発言議員が表示されます。</p>
+      <p class="lead" style="margin:-2px 0 12px;font-size:12px">バーをクリックすると、そのテーマの全質問と発言議員が表示されます。件数は<b>主テーマ（1問1テーマ）</b>で数えています。複数の分野にまたがる質問には<b>副テーマ</b>を併記し、絞り込み・検索では副テーマでも拾えます（件数には含みません）。</p>
       <div id="themeBars"></div>
     </div>
     <div class="card">
@@ -583,6 +587,11 @@ function fillSelects(){
   $('#fSession').insertAdjacentHTML('beforeend',sessions.map(i=>`<option value="${i}">第${i}号 ${sessLabel(i)}</option>`).join(''));
 }
 function tgPill(t){return `<span class="tg" style="background:${TCOLOR[t]}1A;color:${TCTEXT[t]}"><span class="d" style="background:${TCOLOR[t]}"></span>${t}</span>`;}
+/* 副テーマ＝主テーマ以外にもまたがる質問の「もう一方の分野」。絞り込み・検索には効くが、件数集計には入れない。 */
+function tgPillSub(t){return `<span class="tg tg-sub" style="color:${TCTEXT[t]}" title="副テーマ（この質問は${t}にもまたがります。テーマ別の件数には含めていません）"><span class="d" style="background:${TCOLOR[t]}"></span>${t}<span class="sublab">副</span></span>`;}
+function subsOf(r){return r.subs||[];}
+function tgPills(r){return tgPill(r.theme)+subsOf(r).map(tgPillSub).join('');}
+function hasTheme(r,t){return r.theme===t||subsOf(r).includes(t);}
 function qaDetail(r){
   let inner='';
   if(r.qa){
@@ -616,7 +625,7 @@ function qaDetail(r){
 function qItemHtml(r,showMember){
   const badge=r.published?'<span class="badge b-pub">掲載</span>':'<span class="badge b-non">未掲載</span>';
   const hasQa=r.qa?(r.qa.v?'<span class="qa-yes">原文</span>':'<span class="qa-sum">要約</span>'):'';
-  const head=`<div class="qmeta">${showMember?`<span class="mlink" data-m="${r.member}">${r.member}</span>`:''}${tgPill(r.theme)}${badge}${hasQa}${r.published?`<span class="ss num">P.${r.page}</span>`:`<span class="ss num" title="本文未掲載。一般質問一覧表（目次・P.8）に題名のみ記載">一覧</span>`}</div><div class="qbody">${escapeHtml(r.text)}</div>`;
+  const head=`<div class="qmeta">${showMember?`<span class="mlink" data-m="${r.member}">${r.member}</span>`:''}${tgPills(r)}${badge}${hasQa}${r.published?`<span class="ss num">P.${r.page}</span>`:`<span class="ss num" title="本文未掲載。一般質問一覧表（目次・P.8）に題名のみ記載">一覧</span>`}</div><div class="qbody">${escapeHtml(r.text)}</div>`;
   return `<div class="qitem">${head}<button class="qexp" type="button">問・答を開く ▾</button><div class="qdetail" hidden>${qaDetail(r)}</div></div>`;
 }
 function renderTable(){
@@ -625,10 +634,10 @@ function renderTable(){
   let rows=R.filter(r=>{
     if(fm&&r.member!==fm)return false;
     if(fk&&kaihaShort(r.member)!==fk)return false;
-    if(ft&&r.theme!==ft)return false;
+    if(ft&&!hasTheme(r,ft))return false;      // 副テーマでも拾う
     if(fs&&r.issue!=fs)return false;
     if(fp!==''&&(r.published?1:0)!=fp)return false;
-    if(q&&!(r.text.includes(q)||r.member.includes(q)||r.theme.includes(q)||r.session.includes(q)))return false;
+    if(q&&!(r.text.includes(q)||r.member.includes(q)||r.theme.includes(q)||subsOf(r).some(t=>t.includes(q))||r.session.includes(q)))return false;
     return true;
   });
   rows.sort((a,b)=>{
@@ -642,7 +651,7 @@ function renderTable(){
     <td><b class="num">第${r.issue}号</b><br><span class="pg">${r.session}</span></td>
     <td><span class="mlink mlink-av" data-m="${r.member}">${avatar(r.member,26)}<span>${r.member}</span></span></td>
     <td class="qt-text"><div class="qcellhead">${escapeHtml(r.text)}</div><button class="qexp qexp-t" type="button">問・答 ▾</button><div class="qdetail" hidden>${qaDetail(r)}</div></td>
-    <td>${tgPill(r.theme)}</td>
+    <td>${tgPills(r)}</td>
     <td>${r.published?'<span class="badge b-pub">掲載</span>':'<span class="badge b-non">未掲載</span>'}${r.qa?(r.qa.v?'<br><span class="qa-yes" style="margin-top:4px;display:inline-block">原文</span>':'<br><span class="qa-sum" style="margin-top:4px;display:inline-block">要約</span>'):''}</td>
     <td class="pg num">${r.published?'P.'+r.page:'<span title="本文未掲載。一般質問一覧表（目次・P.8）に題名のみ記載">一覧</span>'}</td>
   </tr>`).join('');
@@ -688,15 +697,26 @@ function openTheme(t){
   $('#shTitle').textContent=t;$('#shKana').textContent='テーマ別の質問一覧';
   $('#shStats').innerHTML=`<div><b class="num">${n}</b>質問数</div><div><b class="num">${Object.keys(mc).length}</b>取り上げた議員</div>`;
   const mcSorted=Object.entries(mc).sort((a,b)=>seatIdx(a[0])-seatIdx(b[0]));  // 議席番号順
-  const maxc=mcSorted[0][1];
-  let bd=`<div class="tbreak"><div class="tbreak-h">議員ごとの質問数（このテーマ）</div>`;
-  mcSorted.forEach(([m,c])=>{bd+=`<div class="tb-row"><span class="tb-name mlink" data-m="${m}">${m}</span><span class="tb-bar"><i style="width:${c/maxc*100}%;background:${TCOLOR[t]}"></i></span><span class="tb-c" aria-label="${c}問"><b class="num">${c}</b><span class="tb-unit">問</span></span></div>`;});
-  bd+=`</div>`;
-  let html=bd;let lastIssue=null;
+  let html='';
+  if(mcSorted.length){
+    const maxc=Math.max(...mcSorted.map(e=>e[1]));
+    let bd=`<div class="tbreak"><div class="tbreak-h">議員ごとの質問数（このテーマ）</div>`;
+    mcSorted.forEach(([m,c])=>{bd+=`<div class="tb-row"><span class="tb-name mlink" data-m="${m}">${m}</span><span class="tb-bar"><i style="width:${c/maxc*100}%;background:${TCOLOR[t]}"></i></span><span class="tb-c" aria-label="${c}問"><b class="num">${c}</b><span class="tb-unit">問</span></span></div>`;});
+    bd+=`</div>`;
+    html=bd;
+  }
+  let lastIssue=null;
   rs.forEach(r=>{
     if(r.issue!==lastIssue){html+=`<div class="qgrp">第${r.issue}号　${r.session}</div>`;lastIssue=r.issue;}
     html+=qItemHtml(r,true);
   });
+  // 副テーマでこのテーマにまたがる質問。上の件数には含めず、別掲で動線だけ確保する。
+  const sub=R.filter(r=>subsOf(r).includes(t)).sort((a,b)=>a.issue-b.issue||a.order-b.order);
+  if(sub.length){
+    html+=`<div class="qgrp qgrp-sub">副テーマとして${t}にまたがる質問（${sub.length}件）<span class="qgrp-note">主たる分野は別のテーマとして数えています。上の件数には含みません。</span></div>`;
+    sub.forEach(r=>{html+=qItemHtml(r,true);});
+  }
+  if(!html)html=`<div class="emptybox">このテーマの質問はまだありません。</div>`;
   $('#shBody').innerHTML=html;
   $$('#shBody .mlink').forEach(el=>el.onclick=()=>openMember(el.dataset.m));
   openModal();
