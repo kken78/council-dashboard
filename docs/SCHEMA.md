@@ -15,7 +15,7 @@
 |---|---|
 | issue / session / year / month / published_date | 号・定例会・発行 |
 | index_page | 一般質問一覧表（目次）のページ（通常8） |
-| links.bulletin_pdf / minutes / video | 議会だよりPDF・会議録・録画 |
+| links.bulletin_pdf / minutes / video | 議会だよりPDF・会議録ページ（「本会議のご案内」ではなく「…・会議録」のページ）・録画 |
 | members[] | name, kana, order（発言順）, page（本文ページ）, questions[] |
 
 ### questions[] の各要素
