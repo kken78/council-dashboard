@@ -616,6 +616,7 @@ function qaDetail(r){
     if(r.published)links.push(`<a class="qa-link" href="${r.bulletin}" target="_blank" rel="noopener">議会だより第${r.issue}号（PDF・P.${r.page}）</a>`);
     else links.push(`<a class="qa-link" href="${r.bulletin}" target="_blank" rel="noopener">議会だより第${r.issue}号 一般質問一覧表（PDF・P.8）</a>`);
   }
+  if(r.exchange)links.push(`<a class="qa-link" href="${r.exchange}" target="_blank" rel="noopener" title="会議録横断検索で、この一般質問の質問・再質問・答弁を発言順に表示します">会議録のやりとりを見る</a>`);
   if(r.minutes)links.push(`<a class="qa-link" href="${r.minutes}" target="_blank" rel="noopener">会議録で全文を読む</a>`);
   if(r.video)links.push(`<a class="qa-link" href="${r.video}" target="_blank" rel="noopener">録画配信を見る</a>`);
   inner+=`<div class="qa-links">${links.join('')}</div>`;

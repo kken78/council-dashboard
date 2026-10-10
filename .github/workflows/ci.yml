@@ -1,0 +1,19 @@
+name: ci
+# PR のたびにデータ検査とビルドを行う（公開はしない。公開は main への push で build.yml が行う）。
+on:
+  pull_request:
+  workflow_dispatch: {}
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: データ検査
+        run: python scripts/validate.py
+      - name: ビルド
+        run: python build.py

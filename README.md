@@ -21,6 +21,7 @@ https://kken78.github.io/council-dashboard/
 - **質問一覧**：全質問を検索・絞り込み（号／議員／テーマ／掲載・未掲載）。
 - **原文表示**：議会だより掲載のままの問・答を再現（要約ではなく原文）。
 - **一次情報への動線**：各質問から議会だより（PDF）・会議録・録画配信へ。録画は議員別の個別ページ（発言区切り）に直接リンクします。
+- **会議録のやりとりへ直接**：各質問から、会議録横断検索の「やりとり表示」（質問・再質問・答弁を発言順に）を開けます。議会だよりでは要約で溶け込んでいる応酬の深さを確認できます。
 
 > （ここにスクリーンショットを掲載予定）
 
@@ -112,6 +113,7 @@ config.json              自治体プロファイル（議員・テーマ・会�
 data/issue-NN.json       議会だより1号ぶん（問・答の本文込み）
 data/_template.json      新しい号を作るときのひな形
 data/videos.json         録画配信の突合表（号×議員→録画URL）。build_video_map.py が生成
+data/minutes_links.json  会議録のやりとりへのリンク表（号×議員→会議録横断検索のURL）。build_minutes_map.py が生成
 build.py                 config + data（＋ videos.json）から docs/ を生成（ダッシュボード＋オープンデータ）
 src/render_html.py       ダッシュボードHTMLのレンダラ（build.py が呼び出す）
 docs/                    GitHub Pages の配信対象（index.html ＋ data/ のCSV・JSON）
@@ -122,7 +124,13 @@ docs/SCHEMA.md           データ辞書
 docs/ADD_NEW_ISSUE.md    新号の追加手順
 scripts/validate.py      データ検査（キー重複・テーマ名・掲載なのに本文空 などを点検）
 scripts/build_video_map.py  議会中継サイトを巡回し videos.json を生成（録画リンクの全件突合）
-.github/workflows/       push で 検査→ビルド→Pages公開 を自動実行
+scripts/build_minutes_map.py 会議録横断検索のデータから minutes_links.json を生成
+scripts/update_minutes_links.py 会議録が公開された号の links.minutes を会議録ページに差し替え
+scripts/check_new_issue.py   議会だより一覧ページに未収録の号が出ていないか確認
+scripts/draft_issue.py       会議録から新しい号の下書き（data/drafts/）を作る
+.github/workflows/build.yml  push で 検査→ビルド→Pages公開 を自動実行
+.github/workflows/ci.yml     PR で 検査→ビルド
+.github/workflows/watch.yml  週1回：新しい号の Issue 作成・会議録リンク更新の PR 作成・リンクのオンライン検査
 ```
 
 ビルドは `python build.py`（事前に `python scripts/validate.py` で検査）。GitHub Pages は、リポジトリの Settings → Pages で配信元を「GitHub Actions」に設定すると、`config.json`・`data/` の変更を push するだけで自動更新されます。
@@ -141,6 +149,25 @@ scripts/build_video_map.py  議会中継サイトを巡回し videos.json を生
 - 議員名は `config.json` の氏名と突合します（NFKC・異体字・空白を吸収）。中継サイトのリニューアルでIDが変わった場合は、スクリプトを再実行すれば追随できます。
 
 前述のとおり、この巡回・パースは日野町の中継サイト（jfit系）の構造に依存します。他自治体へ展開する際は、この部分を各サイトに合わせて作り直してください。
+
+## 会議録のやりとりへのリンク（会議録横断検索との連携）
+
+各質問の「会議録のやりとりを見る」は、[会議録横断検索](https://kken78.github.io/hino-council-search/)のやりとり表示（その一般質問の質問・再質問・答弁を発言順に並べた画面）を開きます。
+
+- 対応表は `data/minutes_links.json`（号×議員→URL）。`scripts/build_minutes_map.py` が会議録横断検索の公開データ（審議構造 `proceedings.json`）から生成します。取得元は `config.json` の `minutes_search`。
+- 会議録で検出した「問」の数が議会だよりの質問数と一致する議員は、質問ごとにその問の位置を強調して開きます。一致しない場合は一般質問の冒頭を開きます（誤った問を強調しないため）。
+- 会議録が未公開の号にはリンクを出しません。会議録が公開されると、週1回の `watch` ワークフローが `links.minutes` の差し替えとリンク表の更新を PR にします。
+- 他自治体で会議録横断検索を使わない場合は、`config.json` から `minutes_search` を削除すれば従来どおり動きます。
+
+## 週1回の自動確認（GitHub Actions）
+
+`.github/workflows/watch.yml` が毎週月曜 7:00（日本時間）に次を行います。手動実行は Actions → watch → Run workflow。
+
+1. 議会だよりの一覧ページに、まだデータに無い号が出ていれば **Issue** を作ります（本文の転記は人が行うため。Issue に追加手順のチェックリストを載せます）。
+2. 会議録が公開された号の会議録リンクの差し替えと、`minutes_links.json` の更新があれば **PR** を作ります。
+3. 会議録リンクのオンライン検査（`validate.py --online`）の結果を実行サマリーに残します。
+
+PR を作るには、Settings → Actions → General → Workflow permissions の「Allow GitHub Actions to create and approve pull requests」をオンにします。
 
 ## ライセンス
 
