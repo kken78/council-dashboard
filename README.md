@@ -122,6 +122,7 @@ docs/EDITORIAL_POLICY.md 編集方針（質問数の扱い・テーマ分類・�
 docs/DESIGN_REVIEW.md    設計レビューと修正計画（デジタル庁ガイドブック準拠の観点）
 docs/SCHEMA.md           データ辞書
 docs/ADD_NEW_ISSUE.md    新号の追加手順
+docs/NEW_TERM.md         改選への備え（選挙期間中の扱いの協議事項・改選後の切り替え手順）
 scripts/validate.py      データ検査（キー重複・テーマ名・掲載なのに本文空 などを点検）
 scripts/build_video_map.py  議会中継サイトを巡回し videos.json を生成（録画リンクの全件突合）
 scripts/build_minutes_map.py 会議録横断検索のデータから minutes_links.json を生成
@@ -131,6 +132,7 @@ scripts/draft_issue.py       会議録から新しい号の下書き（data/draf
 .github/workflows/build.yml  push で 検査→ビルド→Pages公開 を自動実行
 .github/workflows/ci.yml     PR で 検査→ビルド
 .github/workflows/watch.yml  週1回：新しい号の Issue 作成・会議録リンク更新の PR 作成・リンクのオンライン検査
+.github/workflows/keepalive.yml 毎月：60日無活動での定期実行の自動停止を防ぐ
 ```
 
 ビルドは `python build.py`（事前に `python scripts/validate.py` で検査）。GitHub Pages は、リポジトリの Settings → Pages で配信元を「GitHub Actions」に設定すると、`config.json`・`data/` の変更を push するだけで自動更新されます。
@@ -155,7 +157,7 @@ scripts/draft_issue.py       会議録から新しい号の下書き（data/draf
 各質問の「会議録のやりとりを見る」は、[会議録横断検索](https://kken78.github.io/hino-council-search/)のやりとり表示（その一般質問の質問・再質問・答弁を発言順に並べた画面）を開きます。
 
 - 対応表は `data/minutes_links.json`（号×議員→URL）。`scripts/build_minutes_map.py` が会議録横断検索の公開データ（審議構造 `proceedings.json`）から生成します。取得元は `config.json` の `minutes_search`。
-- 会議録で検出した「問」の数が議会だよりの質問数と一致する議員は、質問ごとにその問の位置を強調して開きます。一致しない場合は一般質問の冒頭を開きます（誤った問を強調しないため）。
+- 質問ごとの位置は、会議録横断検索が議会だよりの題名・問の本文と会議録の発言の文字の重なりで推定したもの（`qalign`）を使い、その問の位置を強調して開きます（第24〜35号で 281/303問）。確信度の低い質問は一般質問の冒頭を開きます（誤った問を強調しないため）。
 - 会議録が未公開の号にはリンクを出しません。会議録が公開されると、週1回の `watch` ワークフローが `links.minutes` の差し替えとリンク表の更新を PR にします。
 - 他自治体で会議録横断検索を使わない場合は、`config.json` から `minutes_search` を削除すれば従来どおり動きます。
 
@@ -168,6 +170,8 @@ scripts/draft_issue.py       会議録から新しい号の下書き（data/draf
 3. 会議録リンクのオンライン検査（`validate.py --online`）の結果を実行サマリーに残します。
 
 PR を作るには、Settings → Actions → General → Workflow permissions の「Allow GitHub Actions to create and approve pull requests」をオンにします。
+
+公開リポジトリでは、60日間リポジトリに動きが無いと定期実行が自動で止まります。`.github/workflows/keepalive.yml` が毎月1日に定期実行を有効化し直し、main の最終コミットから45日以上空いていれば `keepalive` ブランチに空コミットを送ります（main ではないので公開は動きません）。
 
 ## ライセンス
 

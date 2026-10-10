@@ -6,8 +6,10 @@
 
 会議録横断検索の審議構造（proceedings.json）から、号の会議でのその議員の一般質問の範囲を探し、
 やりとり表示を開く共有リンク（#thread=…）を作る。
-会議録で検出した「問」の数が議会だよりの質問数と一致するときだけ、質問ごとにその問の位置を強調する
-（focus）。一致しなければ一般質問の冒頭を開く（誤った問を強調しないため）。
+質問ごとの位置は、会議録横断検索が議会だよりの題名・問の本文と発言の文字の重なりで推定した qalign
+（[[質問番号, 相対位置], …]。確信度の低い質問は含まない）があればそれを使い、その問の位置を強調する（focus）。
+qalign が無い古いデータでは、会議録で検出した「問」の数が質問数と一致するときだけ位置を合わせる。
+どちらも無い質問は一般質問の冒頭を開く（誤った問を強調しないため）。
 会議録が未公開の号は作らない（ビルドは号レベルの「会議録で全文を読む」リンクのまま）。
 
 使い方：python scripts/build_minutes_map.py   （ネット接続が必要。ローカルなら MINUTES_DATA_URL=…/public/data）
@@ -59,16 +61,23 @@ def main():
             if not seg:
                 miss.append(m["name"])
                 continue
-            qs = q_turn_sids(seg)
             nums = [q["n"] for q in m["questions"]]
             per_q = {}
-            if len(qs) == len(nums):  # 問の数が一致するときだけ、質問ごとに位置を合わせる
-                for n, sid in zip(sorted(nums), qs):
-                    per_q[str(n)] = thread_url(st["site_url"], seg, sid)
+            pre, f0 = seg["from"][:-4], int(seg["from"][-4:])
+            if seg.get("qalign"):  # 議会だよりの質問ごとの位置（会議録横断検索の推定）
+                for n, off in seg["qalign"]:
+                    if n in nums:
+                        per_q[str(n)] = thread_url(st["site_url"], seg, f"{pre}{f0 + off:04d}")
+            else:
+                qs = q_turn_sids(seg)
+                if len(qs) == len(nums):  # 問の数が一致するときだけ、質問ごとに位置を合わせる
+                    for n, sid in zip(sorted(nums), qs):
+                        per_q[str(n)] = thread_url(st["site_url"], seg, sid)
             entry[m["name"]] = {"meeting_id": mid, "url": thread_url(st["site_url"], seg), "questions": per_q}
         out[str(iss)] = entry
-        aligned = sum(1 for v in entry.values() if v["questions"])
-        report.append(f"#{iss}: {len(entry)}/{len(d['members'])} 人を結びつけ（質問ごとの位置合わせ {aligned} 人）"
+        nq = sum(len(m["questions"]) for m in d["members"])
+        aligned = sum(len(v["questions"]) for v in entry.values())
+        report.append(f"#{iss}: {len(entry)}/{len(d['members'])} 人を結びつけ（質問ごとの位置合わせ {aligned}/{nq} 問）"
                       + (f"／未一致 {', '.join(miss)}" if miss else ""))
     OUT.write_text(json.dumps(out, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     print(f"data/minutes_links.json を作成（{sum(len(v) for v in out.values())} 人分）")
