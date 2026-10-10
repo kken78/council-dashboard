@@ -11,6 +11,11 @@
     "name_short": "日野町",
     "term_label": "第18期"
   },
+  "minutes_search": {
+    "note": "会議録横断検索（任意）。質問から会議録のやりとり表示へリンクする。他自治体で使わない場合はこの項目ごと削除する。",
+    "site_url": "https://kken78.github.io/hino-council-search/",
+    "data_url": "https://raw.githubusercontent.com/kken78/hino-council-search/main/public/data"
+  },
   "default_member_order": "seat",
   "default_theme_order": "count",
   "members": [

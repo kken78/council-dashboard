@@ -1,0 +1,111 @@
+name: watch
+# 週1回（月曜 7:00 JST。会議録横断検索の取り込み 6:00 の後）、次を確認する。
+#  1. 議会だよりの一覧ページに、まだデータに無い号が出ていないか → 出ていれば Issue を作る（手入力のため）
+#  2. 会議録が公開された号の links.minutes（案内ページ）を会議録ページに差し替え、
+#     質問→会議録のやりとりへのリンク表（data/minutes_links.json）を更新 → 変化があれば PR を作る
+#  3. 会議録リンクのオンライン検査（validate.py --online）の結果を実行サマリーに残す
+# 必要な設定：Settings → Actions → General → Workflow permissions の
+#   「Allow GitHub Actions to create and approve pull requests」をオン。
+on:
+  schedule:
+    - cron: "0 22 * * 0" # 日曜 22:00 UTC = 月曜 7:00 JST
+  workflow_dispatch: {}
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+concurrency:
+  group: watch
+  cancel-in-progress: false
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      BRANCH: auto/minutes-links
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 新しい号の確認（あれば Issue）
+        run: |
+          python scripts/check_new_issue.py | tee "$RUNNER_TEMP/new.json"
+          python - "$RUNNER_TEMP/new.json" > "$RUNNER_TEMP/issues.tsv" <<'PY'
+          import json, sys
+          d = json.load(open(sys.argv[1]))
+          for x in d.get("new", []):
+              print(f'{x["issue"]}\t{x["pdf"]}')
+          PY
+          while IFS=$'\t' read -r N PDF; do
+            [ -z "$N" ] && continue
+            TITLE="議会だより第${N}号が公開されました（データ追加）"
+            if gh issue list --state open --search "\"議会だより第${N}号\" in:title" --json number -q '.[0].number' | grep -q .; then
+              echo "第${N}号の Issue は作成済み"; continue
+            fi
+            {
+              echo "議会だよりの一覧ページに **第${N}号** が公開されました。"
+              echo
+              echo "- PDF：${PDF}"
+              echo
+              echo "## 追加の手順（docs/ADD_NEW_ISSUE.md）"
+              echo "- [ ] 下書きを作る：\`python scripts/draft_issue.py ${N} \"令和◯年◯月定例会議\"\`（会議録から質問者・順番・会議録リンクを埋める）"
+              echo "- [ ] 議会だよりから題名・テーマ・掲載/未掲載・問・答・ページを転記し、\`data/issue-${N}.json\` に保存"
+              echo "- [ ] \`scripts/build_video_map.py\` の \`ISSUE_TO_GIKAI\` に号→定例会を追加して実行"
+              echo "- [ ] \`python scripts/build_minutes_map.py\`（会議録のやりとりへのリンク）"
+              echo "- [ ] \`python scripts/validate.py --online\` → \`python build.py\`"
+              echo
+              echo "このIssueは .github/workflows/watch.yml が自動で作成しました。"
+            } > "$RUNNER_TEMP/issue.md"
+            gh issue create --title "$TITLE" --body-file "$RUNNER_TEMP/issue.md"
+          done < "$RUNNER_TEMP/issues.tsv"
+
+      - name: 会議録リンクの差し替えとやりとりリンクの更新
+        id: links
+        run: |
+          python scripts/update_minutes_links.py | tee "$RUNNER_TEMP/replaced.txt"
+          python scripts/build_minutes_map.py | tee "$RUNNER_TEMP/map.txt"
+          if git diff --quiet -- data/; then echo "changed=false" >> "$GITHUB_OUTPUT"; else echo "changed=true" >> "$GITHUB_OUTPUT"; fi
+
+      - name: 検査とビルド（変化があったとき）
+        if: steps.links.outputs.changed == 'true'
+        run: |
+          python scripts/validate.py
+          python build.py
+
+      - name: PR を作成（既に開いていれば更新）
+        if: steps.links.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$BRANCH"
+          git add data docs
+          git commit -m "data: 会議録リンクの更新（$(date -u +%Y-%m-%d)）"
+          git push --force origin "$BRANCH"
+          {
+            echo "## 会議録リンクの自動更新"
+            if [ -s "$RUNNER_TEMP/replaced.txt" ]; then
+              echo "### 会議録ページへの差し替え（会議録が公開された号）"
+              sed 's/^/- /' "$RUNNER_TEMP/replaced.txt"
+            fi
+            echo "### 質問→会議録のやりとりへのリンク（data/minutes_links.json）"
+            echo '```'
+            cat "$RUNNER_TEMP/map.txt"
+            echo '```'
+            echo "確認のうえマージしてください（マージすると公開サイトが更新されます）。"
+            echo
+            echo "このPRは .github/workflows/watch.yml が自動で作成しました。"
+          } > "$RUNNER_TEMP/body.md"
+          NUM=$(gh pr list --head "$BRANCH" --state open --json number -q '.[0].number')
+          if [ -n "$NUM" ]; then
+            gh api -X PATCH "repos/${{ github.repository }}/pulls/$NUM" -F "body=@$RUNNER_TEMP/body.md" >/dev/null
+          else
+            gh pr create --base main --head "$BRANCH" --title "data: 会議録リンクの更新（$(date -u +%Y-%m-%d)）" --body-file "$RUNNER_TEMP/body.md"
+          fi
+
+      - name: 会議録リンクのオンライン検査（結果はサマリーへ）
+        if: always()
+        run: |
+          git checkout -q main 2>/dev/null || true
+          { echo "## validate.py --online"; echo '```'; python scripts/validate.py --online || true; echo '```'; } >> "$GITHUB_STEP_SUMMARY"

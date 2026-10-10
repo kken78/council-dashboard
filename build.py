@@ -13,6 +13,9 @@ src/render_html.render() でHTMLを生成する。表示ロジックとデータ
 「号×議員→録画URL」の突合表）を読み込み、質問ごとに議員別の個別URLを割り当てる。
 突合できない場合や videos.json が無い場合は、従来どおり号レベルの一律リンクに
 フォールバックする。
+
+会議録のやりとりへのリンクは data/minutes_links.json（scripts/build_minutes_map.py が生成する
+「号×議員→会議録横断検索のやりとり表示URL」）から割り当てる。無ければリンクを出さない。
 """
 import json, glob, os, csv, datetime, sys
 
@@ -35,6 +38,14 @@ def load_sources():
 def load_videos():
     """data/videos.json（号×議員→録画URLの突合表）を読み込む。無ければ空。"""
     p = os.path.join(ROOT, "data", "videos.json")
+    if os.path.exists(p):
+        return json.load(open(p, encoding="utf-8"))
+    return {}
+
+
+def load_minutes_links():
+    """data/minutes_links.json（号×議員→会議録のやりとり表示URL）を読み込む。無ければ空。"""
+    p = os.path.join(ROOT, "data", "minutes_links.json")
     if os.path.exists(p):
         return json.load(open(p, encoding="utf-8"))
     return {}
@@ -98,8 +109,9 @@ def build_meta(config, issues, records=None):
     }
 
 
-def build_records(issues, videos=None):
+def build_records(issues, videos=None, mlinks=None):
     videos = videos or {}
+    mlinks = mlinks or {}
     records = []
     rid = 0
     for d in issues:
@@ -107,9 +119,11 @@ def build_records(issues, videos=None):
         links = d["links"]
         issue_video = links.get("video", "")          # 号レベル（従来の一律リンク）
         vmap = videos.get(str(iss), {})               # {議員名: {result_url, play_url, ...}}
+        lmap = mlinks.get(str(iss), {})               # {議員名: {url, questions: {番号: url}}}
         for m in d["members"]:
             entry = vmap.get(m["name"])
             member_video = entry["result_url"] if entry else issue_video
+            ml = lmap.get(m["name"]) or {}
             for q in m["questions"]:
                 rid += 1
                 rec = {
@@ -122,6 +136,8 @@ def build_records(issues, videos=None):
                     "minutes": links.get("minutes", ""), "bulletin": links.get("bulletin_pdf", ""),
                     "video": member_video,            # 個別（なければ従来の一律リンク）
                     "video_issue": issue_video,       # 号レベルは従来の一律を維持
+                    # 会議録横断検索のやりとり表示（質問の位置が分かればその問、無ければ一般質問の冒頭）
+                    "exchange": (ml.get("questions") or {}).get(str(q["n"])) or ml.get("url", ""),
                 }
                 if q["published"] and q.get("q"):
                     rec["qa"] = {
@@ -169,14 +185,14 @@ def write_open_data(config, issues, records):
         w = csv.writer(f)
         w.writerow(["issue", "published_date", "seat", "member", "order", "q_num",
                     "theme", "sub_themes", "published", "title", "answer_title", "has_fulltext",
-                    "bulletin_pdf", "minutes", "video"])
+                    "bulletin_pdf", "minutes", "minutes_exchange", "video"])
         seat = {m["name"]: m["seat"] for m in config["members"]}
         for r in records:
             w.writerow([r["issue"], r["pub_date"], seat.get(r["member"], ""), r["member"],
                         r["order"], r["q_num"], r["theme"], ";".join(r["subs"]),
                         int(r["published"]), r["text"],
                         (r["qa"] or {}).get("at", ""), int(bool(r["qa"])),
-                        r["bulletin"], r["minutes"], r["video"]])
+                        r["bulletin"], r["minutes"], r["exchange"], r["video"]])
 
     # questions.json（全文込み・機械判読用）
     qjson = []
@@ -185,7 +201,7 @@ def write_open_data(config, issues, records):
                 "q_num": r["q_num"], "theme": r["theme"], "sub_themes": r["subs"],
                 "published": r["published"],
                 "title": r["text"], "pub_date": r["pub_date"], "bulletin": r["bulletin"],
-                "minutes": r["minutes"], "video": r["video"]}
+                "minutes": r["minutes"], "minutes_exchange": r["exchange"], "video": r["video"]}
         if r["qa"]:
             item["answer_title"] = r["qa"]["at"]
             item["question_text"] = r["qa"]["q"]
@@ -228,7 +244,7 @@ def write_open_data(config, issues, records):
 def main():
     config, issues = load_sources()
     videos = load_videos()
-    records = build_records(issues, videos)
+    records = build_records(issues, videos, load_minutes_links())
     meta = build_meta(config, issues, records)
     n = write_html(records, meta)
     write_open_data(config, issues, records)
@@ -239,6 +255,7 @@ def main():
     print(f"  docs/index.html  {n:,} bytes")
     print(f"  records {len(records)} / published {pub} / verbatim {sum(1 for r in records if r['qa'])}")
     print(f"  video linked (個別) {linked} / {len(records)}")
+    print(f"  minutes exchange linked {sum(1 for r in records if r['exchange'])} / {len(records)}")
     print(f"  open data -> docs/data/ (questions.csv/json, members.csv, themes.csv, issues.csv)")
 
 
