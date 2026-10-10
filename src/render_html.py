@@ -202,13 +202,13 @@ table.mx tbody th{background:var(--paper-2);text-align:right;padding:6px 7px;fon
 }
 .tg{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
 .tg .d{width:8px;height:8px;border-radius:50%}
-.tg-sub{background:transparent!important;border:1px dashed currentColor;font-weight:600;opacity:.9}
+.tg-sub{background:transparent!important;border:1px dashed currentColor;font-weight:600}
 .qgrp-sub{border-style:dashed}
 .qgrp-sub .qgrp-note{display:block;font-size:11.5px;font-weight:500;color:var(--muted);margin-top:3px}
 .tg-sub .sublab{font-size:9.5px;font-weight:800;letter-spacing:.04em;opacity:.8}
 .badge{font-size:10.5px;font-weight:800;padding:2px 8px;border-radius:6px;white-space:nowrap}
 .b-pub{background:var(--plum-l);color:var(--plum-d)}
-.b-non{background:#EFE9E1;color:#8A7F72;border:1px dashed #C9BCAA}
+.b-non{background:#EFE9E1;color:#5F564B;border:1px dashed #C9BCAA}
 .mlink{color:var(--plum);font-weight:700;cursor:pointer;white-space:nowrap}
 .mlink:hover{text-decoration:underline}
 .pg{color:var(--muted);font-variant-numeric:tabular-nums;font-size:12px}
@@ -242,7 +242,7 @@ table.mx tbody th{background:var(--paper-2);text-align:right;padding:6px 7px;fon
 .avfb{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--plum-d);font-weight:800;background:var(--plum-l)}
 .av{position:relative;width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
 .mid{display:flex;align-items:center;gap:11px;min-width:0}
-.rolebadge{font-size:10px;font-weight:800;color:#fff;background:var(--gold);padding:1px 7px;border-radius:5px;vertical-align:middle;margin-left:4px;letter-spacing:.02em}
+.rolebadge{font-size:10px;font-weight:800;color:#fff;background:#7E6226;padding:1px 7px;border-radius:5px;vertical-align:middle;margin-left:4px;letter-spacing:.02em}
 .rolebadge-lg{font-size:12px;padding:2px 9px;background:rgba(255,255,255,.25)}
 .kaiha{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--ink-2);font-weight:700;margin-top:10px}
 .kdot{width:7px;height:7px;border-radius:50%;background:var(--plum)}
@@ -268,7 +268,7 @@ table.mx tbody th{background:var(--paper-2);text-align:right;padding:6px 7px;fon
 .qdetail{margin-top:10px;padding:13px 14px;background:var(--paper-2);border-radius:10px;border:1px solid var(--line)}
 .qa-q,.qa-a{display:flex;gap:9px;font-size:13px;line-height:1.65;margin:0 0 9px}
 .qa-atitle{display:flex;gap:9px;font-size:13px;line-height:1.6;margin:0 0 9px;font-weight:600;font-variant-numeric:tabular-nums}
-.qa-atitle span:last-child{color:#9a7b3a;white-space:pre-wrap}
+.qa-atitle span:last-child{color:#6E5520;white-space:pre-wrap}
 .qa-o{display:flex;gap:9px;font-size:12.5px;line-height:1.6;margin:10px 0 4px;padding-top:10px;border-top:1px dashed var(--line-2)}
 .qa-o span:last-child{color:var(--ink-2);white-space:pre-wrap}
 .qa-o b{color:var(--teal,#2c7a7b)}
@@ -278,8 +278,8 @@ table.mx tbody th{background:var(--paper-2);text-align:right;padding:6px 7px;fon
 .qa-a b{color:var(--ink);font-weight:700}
 .qa-tag{flex:0 0 auto;width:24px;height:24px;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff}
 .qa-tag.tq{background:var(--plum)}
-.qa-tag.ta{background:var(--gold)}
-.qa-tag.tb{background:#c98a2b}
+.qa-tag.ta{background:#7E6226}
+.qa-tag.tb{background:#9A5E14}
 .qa-tag.to{background:#2c7a7b;width:auto;padding:0 7px}
 .qa-note{font-size:12.5px;color:var(--ink-2);line-height:1.6;margin-bottom:10px}
 .qcellhead{font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.5;margin-bottom:4px}
@@ -396,11 +396,11 @@ footer b{color:var(--ink-2)}
   <h2 class="sec">質問一覧</h2>
   <div class="controls">
     <input type="search" id="q" placeholder="キーワードで検索（例：給食、防災、わたむき自動車…）">
-    <select id="fMember"><option value="">議員すべて</option></select>
-    <select id="fKaiha"><option value="">会派すべて</option></select>
-    <select id="fTheme"><option value="">テーマすべて</option></select>
-    <select id="fSession"><option value="">定例会すべて</option></select>
-    <select id="fPub"><option value="">掲載・未掲載すべて</option><option value="1">掲載のみ</option><option value="0">未掲載のみ</option></select>
+    <select id="fMember" aria-label="議員で絞り込み"><option value="">議員すべて</option></select>
+    <select id="fKaiha" aria-label="会派で絞り込み"><option value="">会派すべて</option></select>
+    <select id="fTheme" aria-label="テーマで絞り込み"><option value="">テーマすべて</option></select>
+    <select id="fSession" aria-label="定例会で絞り込み"><option value="">定例会すべて</option></select>
+    <select id="fPub" aria-label="掲載・未掲載で絞り込み"><option value="">掲載・未掲載すべて</option><option value="1">掲載のみ</option><option value="0">未掲載のみ</option></select>
     <span class="tcount" id="tcount"></span>
   </div>
   <table class="qtable" id="qtable">
@@ -562,7 +562,9 @@ function renderMatrix(){
       if(!c)return `<td></td>`;
       const op=0.25+0.75*(c/maxCell);
       const col=TCOLOR[t];
-      return `<td><div class="mxcell mxc-click" data-m="${m}" data-theme="${t}" style="background:${col};opacity:${op}" title="${m}｜${t}：${c}問（一覧で絞り込み）">${c}</div></td>`;
+      // 濃淡は背景色だけに掛け（要素の opacity だと数字まで薄くなる）、実際の背景に対して読める文字色を選ぶ
+      const [bg,fg]=mxColors(col,op);
+      return `<td><div class="mxcell mxc-click" data-m="${m}" data-theme="${t}" style="background:${bg};color:${fg}" title="${m}｜${t}：${c}問（一覧で絞り込み）">${c}</div></td>`;
     }).join('');
     return `<tr><th class="mxhrow" data-m="${m}" title="${m}（議員別へ）">${m}</th>${cells}<td class="mxtot num">${tot}</td></tr>`;
   }).join('');
@@ -586,6 +588,10 @@ function fillSelects(){
   $('#fTheme').insertAdjacentHTML('beforeend',TORDER.map(t=>`<option value="${t}">${t}</option>`).join(''));
   $('#fSession').insertAdjacentHTML('beforeend',sessions.map(i=>`<option value="${i}">第${i}号 ${sessLabel(i)}</option>`).join(''));
 }
+// 議員×テーマ表のセル：テーマ色を白地に op の割合で重ねた背景と、それに対して 4.5:1 以上になる文字色（白か濃い色）
+function mxColors(hex,op){const h=hex.replace('#','');const c=[0,2,4].map(i=>parseInt(h.slice(i,i+2),16));const mix=c.map(v=>Math.round(v*op+255*(1-op)));
+  const lin=v=>{v/=255;return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4);};const lum=a=>0.2126*lin(a[0])+0.7152*lin(a[1])+0.0722*lin(a[2]);
+  const Lb=lum(mix),cw=1.05/(Lb+0.05);return ['rgb('+mix.join(',')+')',cw>=4.5?'#fff':'#231B26'];}
 function tgPill(t){return `<span class="tg" style="background:${TCOLOR[t]}1A;color:${TCTEXT[t]}"><span class="d" style="background:${TCOLOR[t]}"></span>${t}</span>`;}
 /* 副テーマ＝主テーマ以外にもまたがる質問の「もう一方の分野」。絞り込み・検索には効くが、件数集計には入れない。 */
 function tgPillSub(t){return `<span class="tg tg-sub" style="color:${TCTEXT[t]}" title="副テーマ（この質問は${t}にもまたがります。テーマ別の件数には含めていません）"><span class="d" style="background:${TCOLOR[t]}"></span>${t}<span class="sublab">副</span></span>`;}
@@ -813,13 +819,16 @@ def render(records, meta):
         return tuple(round(fg[i]*a+bg[i]*(1-a)) for i in range(3))
     def _text_color(hexcol):
         rgb = _hex2rgb(hexcol)
-        bg = _blend(rgb, (255, 255, 255), 0x1A/255)   # ピル背景＝10%ティント
+        # ピルは白いカードだけでなく、やや暗い地色（--paper-2 #F2ECE3）の上にも置かれる。
+        # 10%ティントを各地色に重ねた背景と、副テーマ（背景なし）が載る地色そのものの、いちばん厳しい組合せで 4.6 以上にする
+        papers = [(255, 255, 255), (0xFA, 0xF7, 0xF2), (0xF2, 0xEC, 0xE3)]
+        bgs = [_blend(rgb, p, 0x1A/255) for p in papers] + papers
         k = 1.0
         while k >= 0:
             cand = tuple(round(c*k) for c in rgb)
-            if _contrast(cand, bg) >= 4.5:
+            if min(_contrast(cand, b) for b in bgs) >= 4.6:
                 return "#%02X%02X%02X" % cand
-            k -= 0.04
+            k -= 0.02
         return "#231B26"
     theme_text = {t: _text_color(c) for t, c in THEME_COLOR.items()}
 
