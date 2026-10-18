@@ -248,6 +248,9 @@
   "source": "日野町議会だより 第24号〜第36号 ／ 議員情報・写真：日野町公式サイト「議員の紹介」",
   "license": {
     "code": "MIT",
-    "data": "CC BY 4.0"
+    "data_structure": "CC BY 4.0",
+    "transcribed_text": "このリポジトリのライセンスの対象外（著作権は日野町議会）",
+    "member_photos": "このリポジトリのライセンスの対象外（日野町のウェブサイトの画像を表示。リポジトリには含まない）",
+    "details": "https://github.com/kken78/council-dashboard/blob/main/LICENSE-DATA.md"
   }
 }

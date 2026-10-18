@@ -94,7 +94,7 @@ https://kken78.github.io/council-dashboard/
 
 ## オープンデータの活用例
 
-`docs/data/` の機械判読データ（CC BY 4.0）は、本ダッシュボード以外からも利用できます。
+`docs/data/` の機械判読データは、本ダッシュボード以外からも利用できます。ライセンスは [LICENSE-DATA.md](LICENSE-DATA.md) の区分に従います。
 
 - [統合MCPサーバー](https://github.com/kken78/hino-council-search/tree/main/mcp)
   （hino-council-search リポジトリ内）— 本ダッシュボードの questions.json と
@@ -175,8 +175,12 @@ PR を作るには、Settings → Actions → General → Workflow permissions �
 
 ## ライセンス
 
-- コード：MIT
-- データ：CC BY 4.0（出典：各議会だより・会議録。再利用時は出典を明記してください）
+対象ごとに扱いが異なります。詳しくは [LICENSE-DATA.md](LICENSE-DATA.md) を参照してください。
+
+- プログラム（build.py、src/、scripts/、.github/）：MIT License（[LICENSE](LICENSE)）
+- データの構造（項目の選び方・並べ方、テーマ分類、副テーマ、掲載・未掲載の区別）：CC BY 4.0
+- 議会だよりなどから転記した部分（質問の題名、問・答の文章など）：このリポジトリのライセンスの対象外（著作権は日野町議会にあります）
+- 議員の写真：このリポジトリのライセンスの対象外（日野町のウェブサイトの画像を表示しており、リポジトリには含みません）
 
 ## 謝辞・連絡
 

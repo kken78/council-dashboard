@@ -58,7 +58,13 @@ config = {
         "議員間の優劣を示す指標ではない。既定表示は議席番号順とし、件数による序列化は行わない。"
     ),
     "source": META["source"],
-    "license": {"code": "MIT", "data": "CC BY 4.0"},
+    "license": {
+        "code": "MIT",
+        "data_structure": "CC BY 4.0",
+        "transcribed_text": "このリポジトリのライセンスの対象外（著作権は日野町議会）",
+        "member_photos": "このリポジトリのライセンスの対象外（日野町のウェブサイトの画像を表示。リポジトリには含まない）",
+        "details": "https://github.com/kken78/council-dashboard/blob/main/LICENSE-DATA.md",
+    },
 }
 json.dump(config, open(os.path.join(OUT, "config.json"), "w", encoding="utf-8"),
           ensure_ascii=False, indent=2)
