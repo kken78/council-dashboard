@@ -8,7 +8,7 @@
 | members[] | 議員。name, kana, seat, kaiha, party, terms, role, photo, note（補欠当選等の前提注記） |
 | themes[] | id, label, color, order |
 | publication_rule / neutrality_policy / theme_policy | 掲載ルールと中立・分類方針の明文 |
-| source / license | 出典・ライセンス（code=MIT, data=CC BY 4.0） |
+| source / license | 出典・ライセンス（code=MIT, data_structure=CC BY 4.0, transcribed_text・member_photos=このリポジトリのライセンスの対象外。区分は LICENSE-DATA.md） |
 
 ## data/issue-NN.json（議会だより1号＝1ファイル）
 | キー | 説明 |

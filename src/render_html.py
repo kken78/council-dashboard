@@ -432,7 +432,7 @@ footer b{color:var(--ink-2)}
 
 <footer><div class="wrap">
   出典：<b>__SOURCE__</b>（__SESSION_RANGE__／発行 __PUB_RANGE__）。〈問・答〉は議会だより掲載のままの原文（改行再現）です。正確な質疑・答弁は各号の本文または会議録をご参照ください。本ダッシュボードは議会だより等の公開情報を、有権者・議員・役場の参考に供する目的で整理したものです。写真は公式サイトの画像を参照表示しており、ネットワーク非接続時は氏名表示に切り替わります。
-  <br><b>最終更新：__BUILD_DATE__</b>　／　オープンデータ（CSV・JSON）：data/ ディレクトリ　／　ライセンス：コード MIT・データ CC BY 4.0
+  <br><b>最終更新：__BUILD_DATE__</b>　／　オープンデータ（CSV・JSON）：data/ ディレクトリ　／　ライセンス：プログラム MIT・データの構造 CC BY 4.0・議会だよりなどから転記した文章と議員の写真は対象外（<a class="inlink" href="https://github.com/kken78/council-dashboard/blob/main/LICENSE-DATA.md" target="_blank" rel="noopener">LICENSE-DATA.md</a>）
 </div></footer>
 
 <script>
