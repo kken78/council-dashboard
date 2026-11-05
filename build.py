@@ -160,7 +160,11 @@ def write_html(records, meta):
     portal = meta["portal"]
     portal_link = (f'　／　<a class="inlink" href="{portal["url"]}">{portal.get("label") or portal["url"]}</a>'
                    if portal.get("url") else "")
+    # ページ上部の戻りリンク（位置づけの帯の中に置く。portal が無ければ出さない）
+    portal_top = (f'<a class="toplink" href="{portal["url"]}">← {portal.get("label") or portal["url"]}</a>'
+                  if portal.get("url") else "")
     repl = {
+        "__PORTAL_TOP__": portal_top,
         "__NOTICE__": meta["notice"],
         "__PORTAL_LINK__": portal_link,
         "__BUILD_DATE__": BUILD_DATE,

@@ -9,7 +9,7 @@
 | themes[] | id, label, color, order |
 | publication_rule / neutrality_policy / theme_policy | 掲載ルールと中立・分類方針の明文 |
 | site_notice | ページの位置づけの断り書き。ページ上部・議員別／テーマ別の画面・フッターの先頭に出す（空なら出さない） |
-| portal | 戻り先のポータル（label, url）。フッターにリンクを出す（無ければ出さない） |
+| portal | 戻り先のポータル（label, url）。ページ上部（位置づけの帯の中）とフッターにリンクを出す（無ければ出さない） |
 | source / license | 出典・ライセンス（code=MIT, data_structure=CC BY 4.0, transcribed_text・member_photos=このリポジトリのライセンスの対象外。区分は LICENSE-DATA.md） |
 
 ## data/issue-NN.json（議会だより1号＝1ファイル）

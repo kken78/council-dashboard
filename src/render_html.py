@@ -321,6 +321,8 @@ footer b{color:var(--ink-2)}
 .topnotice{background:var(--paper-2);border-bottom:1px solid var(--line)}
 .topnotice p{margin:0 auto;padding:7px 20px;font-size:12px;color:var(--ink-2);line-height:1.6}
 .topnotice:has(p:empty){display:none}
+.topnotice .toplink{display:inline-block;margin-right:1em;font-weight:700;color:var(--plum);text-decoration:none;white-space:nowrap}
+.topnotice .toplink:hover{text-decoration:underline}
 .sheet .shnotice{margin:0;padding:7px 22px;font-size:11.5px;color:var(--ink-2);background:var(--paper-2);border-bottom:1px solid var(--line);line-height:1.6}
 .fnotice{margin:0 0 8px;color:var(--ink-2);font-weight:600}
 .shnotice:empty,.fnotice:empty{display:none}
@@ -333,7 +335,7 @@ footer b{color:var(--ink-2)}
   <p class="sub"><b>__TERM_LABEL____TOWN_SHORT__議会議員の活動を紹介する</b>ため、議会だより各号に掲載された一般質問のやりとりを、議員別・テーマ別に蓄積した記録です。有権者の判断材料に、議員ご自身の振り返りに、役場の施策動向の把握にお使いいただけます。</p>
   <span class="termtag">__TERM_LABEL__（議員定数__SEATS__名）　任期：__TERM_RANGE__</span>
 </div></header>
-<div class="topnotice"><p class="wrap">__NOTICE__</p></div>
+<div class="topnotice"><p class="wrap">__PORTAL_TOP____NOTICE__</p></div>
 
 <nav class="tabs"><div class="wrap" role="tablist">
   <button class="tab" id="tab-overview" data-view="overview" role="tab" aria-selected="true" aria-controls="overview">概要</button>
