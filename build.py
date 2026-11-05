@@ -99,6 +99,8 @@ def build_meta(config, issues, records=None):
         "period": period,
         "term": config["town"]["council_term"],
         "source": config.get("source", ""),
+        "notice": config.get("site_notice", ""),      # 位置づけの断り書き（ページ上部・議員別の画面・フッター）
+        "portal": config.get("portal") or {},         # 戻り先のポータル（label, url）。無ければリンクを出さない
         "seats": config["town"]["seats"],
         "bulletin_index": config["town"].get("bulletin_index_url", ""),
         "sessions": sessions,
@@ -155,7 +157,12 @@ def build_records(issues, videos=None, mlinks=None):
 
 def write_html(records, meta):
     html = render_html.render(records, meta)
+    portal = meta["portal"]
+    portal_link = (f'　／　<a class="inlink" href="{portal["url"]}">{portal.get("label") or portal["url"]}</a>'
+                   if portal.get("url") else "")
     repl = {
+        "__NOTICE__": meta["notice"],
+        "__PORTAL_LINK__": portal_link,
         "__BUILD_DATE__": BUILD_DATE,
         "__TOWN_FULL__": meta["town"],
         "__TOWN_SHORT__": meta["town_short"],

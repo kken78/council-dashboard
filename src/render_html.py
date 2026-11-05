@@ -317,6 +317,13 @@ a.tlcap:hover{color:var(--plum);text-decoration:underline}
 footer{border-top:1px solid var(--line);background:var(--paper-2)}
 footer .wrap{padding:20px;font-size:12px;color:var(--muted);line-height:1.7}
 footer b{color:var(--ink-2)}
+/* 位置づけの断り書き（config.json の site_notice。空なら出さない） */
+.topnotice{background:var(--paper-2);border-bottom:1px solid var(--line)}
+.topnotice p{margin:0 auto;padding:7px 20px;font-size:12px;color:var(--ink-2);line-height:1.6}
+.topnotice:has(p:empty){display:none}
+.sheet .shnotice{margin:0;padding:7px 22px;font-size:11.5px;color:var(--ink-2);background:var(--paper-2);border-bottom:1px solid var(--line);line-height:1.6}
+.fnotice{margin:0 0 8px;color:var(--ink-2);font-weight:600}
+.shnotice:empty,.fnotice:empty{display:none}
 </style>
 </head>
 <body>
@@ -326,6 +333,7 @@ footer b{color:var(--ink-2)}
   <p class="sub"><b>__TERM_LABEL____TOWN_SHORT__議会議員の活動を紹介する</b>ため、議会だより各号に掲載された一般質問のやりとりを、議員別・テーマ別に蓄積した記録です。有権者の判断材料に、議員ご自身の振り返りに、役場の施策動向の把握にお使いいただけます。</p>
   <span class="termtag">__TERM_LABEL__（議員定数__SEATS__名）　任期：__TERM_RANGE__</span>
 </div></header>
+<div class="topnotice"><p class="wrap">__NOTICE__</p></div>
 
 <nav class="tabs"><div class="wrap" role="tablist">
   <button class="tab" id="tab-overview" data-view="overview" role="tab" aria-selected="true" aria-controls="overview">概要</button>
@@ -427,12 +435,14 @@ footer b{color:var(--ink-2)}
     </div></div>
     <div class="sm" id="shStats"></div>
   </div>
+  <p class="shnotice">__NOTICE__</p>
   <div class="sb" id="shBody"></div>
 </div></div>
 
 <footer><div class="wrap">
+  <p class="fnotice">__NOTICE__</p>
   出典：<b>__SOURCE__</b>（__SESSION_RANGE__／発行 __PUB_RANGE__）。〈問・答〉は議会だより掲載のままの原文（改行再現）です。正確な質疑・答弁は各号の本文または会議録をご参照ください。本ダッシュボードは議会だより等の公開情報を、有権者・議員・役場の参考に供する目的で整理したものです。写真は公式サイトの画像を参照表示しており、ネットワーク非接続時は氏名表示に切り替わります。
-  <br><b>最終更新：__BUILD_DATE__</b>　／　オープンデータ（CSV・JSON）：data/ ディレクトリ　／　ライセンス：プログラム MIT・データの構造 CC BY 4.0・議会だよりなどから転記した文章と議員の写真は対象外（<a class="inlink" href="https://github.com/kken78/council-dashboard/blob/main/LICENSE-DATA.md" target="_blank" rel="noopener">LICENSE-DATA.md</a>）
+  <br><b>最終更新：__BUILD_DATE__</b>　／　オープンデータ（CSV・JSON）：data/ ディレクトリ　／　ライセンス：プログラム MIT・データの構造 CC BY 4.0・議会だよりなどから転記した文章と議員の写真は対象外（<a class="inlink" href="https://github.com/kken78/council-dashboard/blob/main/LICENSE-DATA.md" target="_blank" rel="noopener">LICENSE-DATA.md</a>）__PORTAL_LINK__
 </div></footer>
 
 <script>
