@@ -51,7 +51,7 @@ https://kken78.github.io/council-dashboard/
 
 録画配信リンクは `data/videos.json`（号×議員→録画URLの突合表）から割り当てます。新しい号を足したら、`scripts/build_video_map.py` の `ISSUE_TO_GIKAI` に「号→定例会(gikai_id)」を1行追加して `python scripts/build_video_map.py` を実行し、突合レポートで一致人数を確認してからビルドします。突合できない質問は、従来の号レベルの一律リンクに自動でフォールバックします（詳細は下記「録画配信リンク（議員別）」）。
 
-**他の自治体で使う人**：`config.json`（自治体名・議員・テーマ・会期）と `data/`（各号）を自分の議会のものに差し替えると動きます。表示される自治体名・会期・出典などはすべて `config` と `data` から生成され、テンプレート（`src/render_html.py`）に自治体固有の文言は埋め込んでいません。並び順（議員＝`default_member_order`、テーマ＝`default_theme_order`）も config で調整できます。
+**他の自治体で使う人**：`config.json`（自治体名・議員・テーマ・会期）と `data/`（各号）を自分の議会のものに差し替えると動きます。表示される自治体名・会期・出典などはすべて `config` と `data` から生成され、テンプレート（`src/render_html.py`）に自治体固有の文言は埋め込んでいません。並び順（議員＝`default_member_order`、テーマ＝`default_theme_order`）も config で調整できます。SNS で共有したときのタグ（OGP）は `config.json` の `ogp` から出します（無ければ出しません）。`docs/og.png` は日野町版の画像なので、差し替えるか、`ogp` を削除してください。
 
 ただし**録画配信の突合スクリプト（`scripts/build_video_map.py`）は、日野町の議会中継サイト（jfit系）のURL・HTML構造に依存**しています。中継システムが異なる自治体では、巡回先とパースを各サイトに合わせて作り直す必要があります。録画突合を使わない場合は、`data/videos.json` を置かなければ従来どおり号レベルの一律リンクで動きます。
 
@@ -109,7 +109,7 @@ https://kken78.github.io/council-dashboard/
 ## リポジトリ構成
 
 ```
-config.json              自治体プロファイル（議員・テーマ・会期・方針・並び順）
+config.json              自治体プロファイル（議員・テーマ・会期・方針・並び順・OGP）
 data/issue-NN.json       議会だより1号ぶん（問・答の本文込み）
 data/_template.json      新しい号を作るときのひな形
 data/videos.json         録画配信の突合表（号×議員→録画URL）。build_video_map.py が生成
@@ -118,6 +118,8 @@ build.py                 config + data（＋ videos.json）から docs/ を生�
 src/render_html.py       ダッシュボードHTMLのレンダラ（build.py が呼び出す）
 docs/                    GitHub Pages の配信対象（index.html ＋ data/ のCSV・JSON）
 docs/data/               オープンデータ（questions.csv/json, members.csv, themes.csv, issues.csv）
+docs/og.png              SNS で共有したときに出る画像（OGP 画像、1200×630）。タグの値は config.json の ogp
+assets/og.svg            OGP 画像の編集元
 docs/EDITORIAL_POLICY.md 編集方針（質問数の扱い・テーマ分類・出典など）
 docs/DESIGN_REVIEW.md    設計レビューと修正計画（デジタル庁ガイドブック準拠の観点）
 docs/SCHEMA.md           データ辞書

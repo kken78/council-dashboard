@@ -17,7 +17,8 @@ src/render_html.render() でHTMLを生成する。表示ロジックとデータ
 会議録のやりとりへのリンクは data/minutes_links.json（scripts/build_minutes_map.py が生成する
 「号×議員→会議録横断検索のやりとり表示URL」）から割り当てる。無ければリンクを出さない。
 """
-import json, glob, os, csv, datetime, sys
+import json, glob, os, csv, datetime, re, sys
+import html as htmllib
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(ROOT, "src"))
@@ -155,7 +156,43 @@ def build_records(issues, videos=None, mlinks=None):
     return records
 
 
-def write_html(records, meta):
+def ogp_tags(html, ogp):
+    """<head> に入れる OGP と Twitter Card のタグ。
+
+    config.json の ogp（url, image, image_alt）から作る。url が空なら og:url・og:type・og:title・
+    og:description を出さず、image が空なら画像のタグを出さない（どちらも空なら何も出さない）。
+    og:title はページの <title>、og:description はページ冒頭の説明（<p class="sub">）の最初の1文を使う。
+    置き換え前の html を受け取るので、__TOWN_SHORT__ などは呼び出し側の置き換えで埋まる。
+    """
+    esc = lambda v: htmllib.escape(v, quote=True)
+    tags = []
+    if ogp.get("url"):
+        title = re.search(r"<title>(.*?)</title>", html, re.S).group(1)
+        sub = re.search(r'<p class="sub">(.*?)</p>', html, re.S)
+        desc = re.sub(r"<[^>]+>", "", sub.group(1)).split("。")[0] + "。" if sub else ""
+        tags += [
+            f'<meta property="og:type" content="website">',
+            f'<meta property="og:title" content="{esc(title)}">',
+        ]
+        if desc:
+            tags.append(f'<meta property="og:description" content="{esc(desc)}">')
+        tags.append(f'<meta property="og:url" content="{esc(ogp["url"])}">')
+    if ogp.get("image"):
+        tags += [
+            f'<meta property="og:image" content="{esc(ogp["image"])}">',
+            '<meta property="og:image:width" content="1200">',
+            '<meta property="og:image:height" content="630">',
+        ]
+        if ogp.get("image_alt"):
+            tags.append(f'<meta property="og:image:alt" content="{esc(ogp["image_alt"])}">')
+        tags += [
+            '<meta name="twitter:card" content="summary_large_image">',
+            f'<meta name="twitter:image" content="{esc(ogp["image"])}">',
+        ]
+    return "".join("\n" + t for t in tags)
+
+
+def write_html(records, meta, ogp=None):
     html = render_html.render(records, meta)
     portal = meta["portal"]
     portal_link = (f'　／　<a class="inlink" href="{portal["url"]}">{portal.get("label") or portal["url"]}</a>'
@@ -165,6 +202,7 @@ def write_html(records, meta):
     portal_top = (f'<a class="toplink" href="{portal["url"]}">← {portal.get("top_label") or portal.get("label") or portal["url"]}</a>'
                   if portal.get("url") else "")
     repl = {
+        "__OGP__": ogp_tags(html, ogp or {}),
         "__PORTAL_TOP__": portal_top,
         "__NOTICE__": meta["notice"],
         "__PORTAL_LINK__": portal_link,
@@ -258,7 +296,8 @@ def main():
     videos = load_videos()
     records = build_records(issues, videos, load_minutes_links())
     meta = build_meta(config, issues, records)
-    n = write_html(records, meta)
+    # ogp は meta に入れない（meta はページの埋め込みデータになるため、ogp の無い自治体の出力を変えない）
+    n = write_html(records, meta, config.get("ogp"))
     write_open_data(config, issues, records)
     pub = sum(1 for r in records if r["published"])
     # 突合状況の目安：質問行のうち個別録画に当たった割合。
