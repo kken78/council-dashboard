@@ -10,6 +10,7 @@
 | publication_rule / neutrality_policy / theme_policy | 掲載ルールと中立・分類方針の明文 |
 | site_notice | ページの位置づけの断り書き。ページ上部・議員別／テーマ別の画面・フッターの先頭に出す（空なら出さない） |
 | portal | 戻り先のポータル（label, url, top_label）。ページ上部（位置づけの帯の中）とフッターにリンクを出す（無ければ出さない）。上部の表示名は top_label、無ければ label を使う。フッターは label |
+| ogp | SNS で共有したときのタグ（url, image, image_alt）。url があれば og:url・og:type・og:title（ページの題）・og:description（ページ冒頭の説明の最初の1文）を、image があれば og:image（1200×630）・og:image:alt・twitter:card（summary_large_image）・twitter:image を `<head>` に出す（無ければ出さない） |
 | source / license | 出典・ライセンス（code=MIT, data_structure=CC BY 4.0, transcribed_text・member_photos=このリポジトリのライセンスの対象外。区分は LICENSE-DATA.md） |
 
 ## data/issue-NN.json（議会だより1号＝1ファイル）

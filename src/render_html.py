@@ -32,7 +32,7 @@ HTML = """<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>__TOWN_SHORT__議会 議会だより・一般質問ダッシュボード</title>
+<title>__TOWN_SHORT__議会 議会だより・一般質問ダッシュボード</title>__OGP__
 <style>
 :root{
   --paper:#FAF7F2; --paper-2:#F2ECE3; --card:#FFFFFF;
