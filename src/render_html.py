@@ -35,6 +35,9 @@ HTML = """<!DOCTYPE html>
 <title>__TOWN_SHORT__議会 議会だより・一般質問ダッシュボード</title>__OGP__
 <style>
 :root{
+  /* 文字の大きさは日野町データポータルの共通の部品のトークン5つだけ（hino-portal DESIGN.md 5.2。docs/DESIGN_REVIEW.md ADR-1）。
+     値は hino-portal の shared/shell.css と同じ。14px より小さい文字は作らない */
+  --portal-fs:16px; --portal-fs-sub:14px; --portal-fs-h1:18px; --portal-fs-h2:24px; --portal-fs-h3:20px;
   --paper:#FAF7F2; --paper-2:#F2ECE3; --card:#FFFFFF;
   --ink:#231B26; --ink-2:#5A4E5E; --muted:#6E6377;
   --plum:#7A1F5C; --plum-d:#5E1646; --plum-l:#F3E4ED;
@@ -61,15 +64,15 @@ header.top{
 }
 header.top::after{content:"";position:absolute;right:-60px;top:-60px;width:280px;height:280px;border-radius:50%;background:rgba(255,255,255,.05)}
 .top .wrap{padding:26px 20px 24px}
-.eyebrow{font-size:12px;letter-spacing:.22em;color:#E9C9DD;font-weight:700;margin:0 0 8px}
-header.top h1{font-size:clamp(22px,3.4vw,32px);margin:0;font-weight:800;letter-spacing:.01em}
-.sub{margin:8px 0 0;color:#EAD3E1;font-size:13.5px;max-width:760px}
-.termtag{display:inline-block;margin-top:14px;padding:6px 13px;border:1px solid rgba(255,255,255,.4);border-radius:999px;font-size:12.5px;font-weight:600;letter-spacing:.02em}
+.eyebrow{font-size:var(--portal-fs-sub);letter-spacing:.22em;color:#E9C9DD;font-weight:700;margin:0 0 8px}
+header.top h1{font-size:var(--portal-fs-h2);margin:0;font-weight:800;letter-spacing:.01em}
+.sub{margin:8px 0 0;color:#EAD3E1;font-size:var(--portal-fs-sub);max-width:760px}
+.termtag{display:inline-block;margin-top:14px;padding:6px 13px;border:1px solid rgba(255,255,255,.4);border-radius:999px;font-size:var(--portal-fs-sub);font-weight:600;letter-spacing:.02em}
 
 /* Nav tabs */
 nav.tabs{position:sticky;top:0;z-index:30;background:rgba(250,247,242,.92);backdrop-filter:saturate(1.2) blur(8px);border-bottom:1px solid var(--line)}
 nav.tabs .wrap{display:flex;gap:4px;overflow-x:auto;padding:0 14px}
-.tab{appearance:none;border:0;background:transparent;color:var(--ink-2);font:inherit;font-weight:700;font-size:14px;
+.tab{appearance:none;border:0;background:transparent;color:var(--ink-2);font:inherit;font-weight:700;font-size:var(--portal-fs-sub);
   padding:14px 14px 12px;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap;letter-spacing:.02em}
 .tab:hover{color:var(--plum)}
 .tab[aria-selected="true"]{color:var(--plum);border-color:var(--plum)}
@@ -79,19 +82,19 @@ main .wrap{padding:24px 20px 64px}
 .view.active{display:block}
 @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
-h2.sec{font-size:16px;font-weight:800;margin:30px 0 14px;letter-spacing:.02em;display:flex;align-items:center;gap:9px}
+h2.sec{font-size:var(--portal-fs);font-weight:800;margin:30px 0 14px;letter-spacing:.02em;display:flex;align-items:center;gap:9px}
 h2.sec::before{content:"";width:5px;height:17px;background:var(--plum);border-radius:2px}
 h2.sec:first-child{margin-top:6px}
-.lead{color:var(--ink-2);font-size:13.5px;margin:-6px 0 16px}
+.lead{color:var(--ink-2);font-size:var(--portal-fs-sub);margin:-6px 0 16px}
 
 /* Stat cards */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 @media(max-width:720px){.stats{grid-template-columns:repeat(2,1fr)}}
 .stat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 16px 14px;box-shadow:var(--shadow)}
-.stat .v{font-size:30px;font-weight:800;line-height:1;color:var(--plum)}
-.stat .v small{font-size:14px;font-weight:700;color:var(--ink-2);margin-left:3px}
-.stat .l{font-size:12.5px;color:var(--ink-2);margin-top:7px;font-weight:600;font-variant-numeric:tabular-nums}
-.stat .x{font-size:11.5px;color:var(--muted);margin-top:2px}
+.stat .v{font-size:var(--portal-fs-h2);font-weight:800;line-height:1;color:var(--plum)}
+.stat .v .u{font-size:var(--portal-fs-sub);font-weight:700;color:var(--ink-2);margin-left:3px}
+.stat .l{font-size:var(--portal-fs-sub);color:var(--ink-2);margin-top:7px;font-weight:600;font-variant-numeric:tabular-nums}
+.stat .x{font-size:var(--portal-fs-sub);color:var(--muted);margin-top:2px}
 
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:var(--shadow);min-width:0}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -99,66 +102,68 @@ h2.sec:first-child{margin-top:6px}
 @media(max-width:860px){.grid2{grid-template-columns:1fr}}
 
 /* Bars */
-.barrow{display:grid;grid-template-columns:140px 1fr 56px;align-items:center;gap:10px;margin:7px 0;font-size:13px}
-.barrow .lab{color:var(--ink);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+.barrow{display:grid;grid-template-columns:11em 1fr 56px;align-items:center;gap:10px;margin:7px 0;font-size:var(--portal-fs-sub)}
+.barrow .lab{color:var(--ink);font-weight:600;overflow-wrap:anywhere;line-height:1.35;cursor:pointer}
 .barrow .lab:hover{color:var(--plum);text-decoration:underline}
 .bartrack{background:var(--paper-2);border-radius:6px;height:18px;overflow:hidden}
 .barfill{height:100%;border-radius:6px;min-width:2px;transition:width .6s cubic-bezier(.2,.7,.2,1)}
-.barrow .cnt{text-align:right;font-weight:700;font-size:13px;color:var(--ink-2);line-height:1.15}
-.barrow .cnt .pct{display:block;font-weight:600;font-size:10.5px;color:var(--muted)}
-.sortnote{margin:8px 2px 0;font-size:12px;color:var(--ink-2);background:var(--plum-l);border-radius:8px;padding:8px 10px;line-height:1.6}
-.viewkind{font-size:11.5px;font-weight:700;color:var(--plum);letter-spacing:.04em;margin:0 0 2px}
+.barrow .cnt{text-align:right;font-weight:700;font-size:var(--portal-fs-sub);color:var(--ink-2);line-height:1.15}
+.barrow .cnt .pct{display:block;font-weight:600;font-size:var(--portal-fs-sub);color:var(--muted)}
+.sortnote{margin:8px 2px 0;font-size:var(--portal-fs-sub);color:var(--ink-2);background:var(--plum-l);border-radius:8px;padding:8px 10px;line-height:1.6}
+.viewkind{font-size:var(--portal-fs-sub);font-weight:700;color:var(--plum);letter-spacing:.04em;margin:0 0 2px}
 :focus-visible{outline:2.5px solid var(--plum);outline-offset:2px;border-radius:4px}
 .clickable,.mcard{cursor:pointer}
 .barrow.clickable{cursor:pointer;border-radius:8px;padding:2px 6px;margin-left:-6px;margin-right:-6px;transition:background .12s}
 .barrow.clickable:hover{background:var(--plum-l)}
 .barrow.clickable:hover .lab{color:var(--plum)}
-@media(max-width:520px){.barrow{grid-template-columns:96px 1fr 46px;font-size:12px}}
+/* 名前の列は「まちづくり・公園・空き家」（12字）が1行に入る幅。狭い画面では名前を棒の上の行に置き、棒の長さを残す（shiga-hino-plans DESIGN.md ADR-8） */
+@media(max-width:520px){.barrow{grid-template-columns:1fr 46px;row-gap:2px}.barrow .lab{grid-column:1/-1}}
 
-/* Session timeline */
-.tl{display:flex;align-items:stretch;gap:10px;max-width:540px;padding:6px 0 2px;margin-top:8px}
-.tlcol{flex:1;display:grid;grid-template-rows:20px 130px auto;align-items:end;justify-items:center;gap:6px;min-width:0}
-.tlbar{width:70%;max-width:38px;background:var(--plum);border-radius:4px 4px 0 0;position:relative;transition:height .6s}
-.tlbar .pub{position:absolute;left:0;right:0;bottom:0;background:rgba(255,255,255,.34)}
-.tlcap{align-self:start;font-size:10.5px;color:var(--ink-2);text-align:center;line-height:1.25;font-weight:600;font-variant-numeric:tabular-nums}
-.tlnum{font-size:13px;font-weight:800;color:var(--plum)}
-@media(max-width:640px){
-  .tl{overflow-x:auto;overscroll-behavior-inline:contain;scroll-snap-type:x proximity;padding-bottom:10px;-webkit-overflow-scrolling:touch}
-  .tlcol{flex:0 0 58px;scroll-snap-align:start}
-  .tlcap{font-size:10px}
-}
+/* Session timeline（定例会ごとの質問数。横棒） */
+/* 縦棒 13 本は、号の札（「第24号」）が 14px で1行に入る幅（46px）で並べるとカードに入らない（幅 360px で 282px、1024px で 446px）。
+   shiga-hino-plans DESIGN.md ADR-8 の「縦棒を横棒へ」により横棒にする。名前は和文8字以内なので、狭い画面でも名前・棒・値を1行に並べる */
+.tl{margin-top:8px}
+.tlrow{display:grid;grid-template-columns:7.5em 1fr 2.5em;align-items:center;gap:10px;margin:5px 0;font-size:var(--portal-fs-sub)}
+.tlcap{color:var(--ink-2);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tltrack{background:var(--paper-2);border-radius:6px;height:16px;overflow:hidden}
+.tlbar{height:100%;background:var(--plum);border-radius:6px;min-width:2px;position:relative}
+.tlbar .pub{position:absolute;top:0;bottom:0;right:0;background:rgba(255,255,255,.34)}
+.tlnum{text-align:right;font-size:var(--portal-fs-sub);font-weight:800;color:var(--plum)}
 
 /* Legend */
 .legend{display:flex;flex-wrap:wrap;gap:8px 14px;margin:14px 0 0}
-.lg{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-2);cursor:pointer}
+.lg{display:flex;align-items:center;gap:6px;font-size:var(--portal-fs-sub);color:var(--ink-2);cursor:pointer}
 .lg .sw{width:11px;height:11px;border-radius:3px}
 .lg:hover{color:var(--ink)}
+
+/* 議員別の並べ替え（ボタンの既定の 13.33px にしない） */
+.sortlab,.sortbtn{font-size:var(--portal-fs-sub)}
 
 /* Member cards */
 .mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:13px}
 .mcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:15px 15px 13px;cursor:pointer;box-shadow:var(--shadow);transition:transform .15s,box-shadow .15s,border-color .15s}
 .mcard:hover{border-color:var(--plum);box-shadow:var(--shadow)}
 .mcard .mh{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
-.mcard .mn{font-size:16px;font-weight:800}
-.mcard .mk{font-size:11px;color:var(--muted);font-weight:600;font-variant-numeric:tabular-nums}
-.mcard .mtot{font-size:22px;font-weight:800;color:var(--plum)}
-.mtot small{font-size:11px;color:var(--ink-2);font-weight:700}
+.mcard .mn{font-size:var(--portal-fs);font-weight:800}
+.mcard .mk{font-size:var(--portal-fs-sub);color:var(--muted);font-weight:600;font-variant-numeric:tabular-nums}
+.mcard .mtot{font-size:var(--portal-fs-h2);font-weight:800;color:var(--plum)}
+.mtot .u{font-size:var(--portal-fs-sub);color:var(--ink-2);font-weight:700}
 .stack{display:flex;gap:1px;height:10px;border-radius:5px;overflow:hidden;margin:11px 0 8px;background:var(--paper-2)}
 .stack i{display:block;height:100%}
 .chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
-.chip{font-size:10.5px;padding:2px 7px;border-radius:999px;background:var(--paper-2);color:var(--ink-2);font-weight:600;font-variant-numeric:tabular-nums}
+.chip{font-size:var(--portal-fs-sub);padding:2px 7px;border-radius:999px;background:var(--paper-2);color:var(--ink-2);font-weight:600;font-variant-numeric:tabular-nums}
 
 /* Matrix */
 .mxwrap{overflow-x:visible;border:1px solid var(--line);border-radius:var(--r);background:var(--card);box-shadow:var(--shadow)}
 .mxhint{display:none}
-table.mx{border-collapse:collapse;font-size:11px;width:100%;table-layout:fixed}
+table.mx{border-collapse:collapse;font-size:var(--portal-fs-sub);width:100%;table-layout:fixed}
 table.mx th,table.mx td{border:1px solid var(--line);padding:0;text-align:center;overflow:hidden}
-table.mx thead th{background:var(--paper-2);font-weight:700;color:var(--ink-2);padding:7px 2px;font-size:9.5px;vertical-align:bottom;line-height:1.2;white-space:normal;overflow:visible}
-table.mx thead th:first-child{width:16%;min-width:80px;font-size:10px}
+table.mx thead th{background:var(--paper-2);font-weight:700;color:var(--ink-2);padding:7px 2px;font-size:var(--portal-fs-sub);vertical-align:bottom;line-height:1.2;white-space:normal;overflow:visible}
+table.mx thead th:first-child{width:16%;min-width:80px;font-size:var(--portal-fs-sub)}
 table.mx thead th:last-child{width:6%}
-table.mx tbody th{background:var(--paper-2);text-align:right;padding:6px 7px;font-weight:700;white-space:nowrap;font-size:11.5px}
+table.mx tbody th{background:var(--paper-2);text-align:right;padding:6px 7px;font-weight:700;white-space:nowrap;font-size:var(--portal-fs-sub)}
 .mxdot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-bottom:3px}
-.mxcell{width:100%;height:30px;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-variant-numeric:tabular-nums;font-size:12px}
+.mxcell{width:100%;height:30px;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-variant-numeric:tabular-nums;font-size:var(--portal-fs-sub)}
 .mxtot{font-weight:800;color:var(--plum);background:#fff}
 .mxhcol{cursor:pointer}
 .mxhcol:hover{background:var(--plum-l);color:var(--plum)}
@@ -168,18 +173,18 @@ table.mx tbody th{background:var(--paper-2);text-align:right;padding:6px 7px;fon
 .mxc-click:hover{outline:2px solid var(--ink);outline-offset:-2px}
 @media(max-width:640px){
   .mxwrap{overflow-x:auto}
-  table.mx{table-layout:auto;min-width:600px}
-  .mxhint{display:block;font-size:11.5px;color:var(--muted);margin:0 0 8px}
+  table.mx{table-layout:auto;min-width:760px}  /* テーマの列見出しが 14px で1行4字入る幅。表の中で横に送る */
+  .mxhint{display:block;font-size:var(--portal-fs-sub);color:var(--muted);margin:0 0 8px}
 }
 
 /* Table */
 .controls{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin-bottom:14px}
-.controls input,.controls select{font:inherit;font-size:13px;padding:8px 11px;border:1px solid var(--line-2);border-radius:9px;background:#fff;color:var(--ink)}
+.controls input,.controls select{font:inherit;font-size:var(--portal-fs-sub);padding:8px 11px;border:1px solid var(--line-2);border-radius:9px;background:#fff;color:var(--ink)}
 .controls input{flex:1;min-width:180px}
 .controls input:focus,.controls select:focus{outline:2px solid var(--plum-l);border-color:var(--plum)}
-.tcount{font-size:12.5px;color:var(--ink-2);font-weight:600;margin-left:auto}
-.qtable{width:100%;border-collapse:collapse;font-size:13px}
-.qtable th{text-align:left;font-size:11.5px;color:var(--muted);font-weight:700;letter-spacing:.04em;padding:8px 10px;border-bottom:2px solid var(--line-2);position:sticky;top:53px;background:var(--paper);cursor:pointer;white-space:nowrap}
+.tcount{font-size:var(--portal-fs-sub);color:var(--ink-2);font-weight:600;margin-left:auto}
+.qtable{width:100%;border-collapse:collapse;font-size:var(--portal-fs-sub)}
+.qtable th{text-align:left;font-size:var(--portal-fs-sub);color:var(--muted);font-weight:700;letter-spacing:.04em;padding:8px 10px;border-bottom:2px solid var(--line-2);position:sticky;top:53px;background:var(--paper);cursor:pointer;white-space:nowrap}
 .qtable th:hover{color:var(--plum)}
 .qtable td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
 .qtable tr:hover td{background:#fff}
@@ -198,57 +203,58 @@ table.mx tbody th{background:var(--paper-2);text-align:right;padding:6px 7px;fon
   #qtable td:nth-child(6){display:none}
   #qtable td.qt-text{flex:1 1 100%;order:9;margin-top:6px;border-top:1px dashed var(--line);padding-top:8px}
   #qtable td.qt-text .qcellhead{max-width:none}
-  #qtable .pg{font-size:11px;color:var(--muted)}
+  #qtable .pg{font-size:var(--portal-fs-sub);color:var(--muted)}
 }
-.tg{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
+.tg{display:inline-flex;align-items:center;gap:5px;font-size:var(--portal-fs-sub);font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
 .tg .d{width:8px;height:8px;border-radius:50%}
 .tg-sub{background:transparent!important;border:1px dashed currentColor;font-weight:600}
 .qgrp-sub{border-style:dashed}
-.qgrp-sub .qgrp-note{display:block;font-size:11.5px;font-weight:500;color:var(--muted);margin-top:3px}
-.tg-sub .sublab{font-size:9.5px;font-weight:800;letter-spacing:.04em;opacity:.8}
-.badge{font-size:10.5px;font-weight:800;padding:2px 8px;border-radius:6px;white-space:nowrap}
+.qgrp-sub .qgrp-note{display:block;font-size:var(--portal-fs-sub);font-weight:500;color:var(--muted);margin-top:3px}
+.tg-sub .sublab{font-size:var(--portal-fs-sub);font-weight:800;letter-spacing:.04em;opacity:.8}
+.badge{font-size:var(--portal-fs-sub);font-weight:800;padding:2px 8px;border-radius:6px;white-space:nowrap}
 .b-pub{background:var(--plum-l);color:var(--plum-d)}
 .b-non{background:#EFE9E1;color:#5F564B;border:1px dashed #C9BCAA}
 .mlink{color:var(--plum);font-weight:700;cursor:pointer;white-space:nowrap}
 .mlink:hover{text-decoration:underline}
-.pg{color:var(--muted);font-variant-numeric:tabular-nums;font-size:12px}
+.pg{color:var(--muted);font-variant-numeric:tabular-nums;font-size:var(--portal-fs-sub)}
 
 /* Note */
-.note{background:var(--plum-l);border:1px solid #E6CDDD;border-radius:var(--r);padding:13px 16px;font-size:12.5px;color:var(--plum-d);margin-top:18px;display:flex;gap:10px;line-height:1.55}
+.note{background:var(--plum-l);border:1px solid #E6CDDD;border-radius:var(--r);padding:13px 16px;font-size:var(--portal-fs-sub);color:var(--plum-d);margin-top:18px;display:flex;gap:10px;line-height:1.55}
 .note b{font-weight:800}
-.note .ico{flex:0 0 auto;width:20px;height:20px;border-radius:50%;background:var(--plum);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;margin-top:1px}
+.note .ico{flex:0 0 auto;width:20px;height:20px;border-radius:50%;background:var(--plum);color:#fff;display:flex;align-items:center;justify-content:center;font-size:var(--portal-fs-sub);font-weight:800;margin-top:1px}
 
 /* Modal */
 .modal{position:fixed;inset:0;background:rgba(35,20,40,.45);backdrop-filter:blur(2px);display:none;align-items:flex-start;justify-content:center;z-index:60;padding:30px 16px;overflow:auto}
 .modal.open{display:flex}
 .sheet{background:var(--paper);border-radius:18px;max-width:760px;width:100%;box-shadow:0 24px 60px rgba(40,10,40,.3);overflow:hidden}
 .sheet .sh{background:var(--plum-d);color:#fff;padding:18px 22px;position:relative}
-.sheet .sh h3{margin:0;font-size:21px;font-weight:800}
-.sheet .sh .sk{font-size:12px;color:#EAD0E0;margin-top:3px;font-weight:600;font-variant-numeric:tabular-nums}
+.sheet .sh h3{margin:0;font-size:var(--portal-fs-h3);font-weight:800}
+.sheet .sh .sk{font-size:var(--portal-fs-sub);color:#EAD0E0;margin-top:3px;font-weight:600;font-variant-numeric:tabular-nums}
 .sheet .sh .sm{display:flex;gap:18px;margin-top:12px}
-.sheet .sh .sm div{font-size:11.5px;color:#EAD0E0}
-.sheet .sh .sm b{display:block;font-size:20px;font-weight:800;color:#fff}
-.xbtn{position:absolute;right:14px;top:14px;width:32px;height:32px;border-radius:50%;border:0;background:rgba(255,255,255,.18);color:#fff;font-size:18px;cursor:pointer}
+.sheet .sh .sm div{font-size:var(--portal-fs-sub);color:#EAD0E0}
+.sheet .sh .sm b{display:block;font-size:var(--portal-fs-h3);font-weight:800;color:#fff}
+.xbtn{position:absolute;right:14px;top:14px;width:32px;height:32px;border-radius:50%;border:0;background:rgba(255,255,255,.18);color:#fff;font-size:var(--portal-fs-h1);cursor:pointer}
 .xbtn:hover{background:rgba(255,255,255,.3)}
 .sheet .sb{padding:18px 22px 26px;max-height:60vh;overflow:auto}
 .qitem{padding:11px 0;border-bottom:1px solid var(--line)}
 .qitem:last-child{border:0}
 .qmeta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px}
-.qmeta .ss{font-size:11.5px;color:var(--ink-2);font-weight:700}
-.qbody{font-size:14px;font-weight:700;color:var(--ink);line-height:1.5}
+.qmeta .ss{font-size:var(--portal-fs-sub);color:var(--ink-2);font-weight:700}
+.qbody{font-size:var(--portal-fs-sub);font-weight:700;color:var(--ink);line-height:1.5}
 
 /* Photos & member meta */
 .avwrap{position:relative;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;flex:0 0 auto;overflow:hidden;background:var(--plum-l);border:2px solid #fff;box-shadow:0 1px 3px rgba(60,30,50,.18);vertical-align:middle}
 .avfb{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--plum-d);font-weight:800;background:var(--plum-l)}
+.avfb-s{font-size:var(--portal-fs-sub)}.avfb-m{font-size:var(--portal-fs-h3)}.avfb-l{font-size:var(--portal-fs-h2)}
 .av{position:relative;width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
 .mid{display:flex;align-items:center;gap:11px;min-width:0}
-.rolebadge{font-size:10px;font-weight:800;color:#fff;background:#7E6226;padding:1px 7px;border-radius:5px;vertical-align:middle;margin-left:4px;letter-spacing:.02em}
-.rolebadge-lg{font-size:12px;padding:2px 9px;background:rgba(255,255,255,.25)}
-.kaiha{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--ink-2);font-weight:700;margin-top:10px}
+.rolebadge{font-size:var(--portal-fs-sub);font-weight:800;color:#fff;background:#7E6226;padding:1px 7px;border-radius:5px;vertical-align:middle;margin-left:4px;letter-spacing:.02em}
+.rolebadge-lg{font-size:var(--portal-fs-sub);padding:2px 9px;background:rgba(255,255,255,.25)}
+.kaiha{display:flex;align-items:center;gap:6px;font-size:var(--portal-fs-sub);color:var(--ink-2);font-weight:700;margin-top:10px}
 .kdot{width:7px;height:7px;border-radius:50%;background:var(--plum)}
-.reptag{font-size:9.5px;font-weight:800;color:var(--plum-d);background:var(--plum-l);padding:1px 6px;border-radius:5px;margin-left:2px}
+.reptag{font-size:var(--portal-fs-sub);font-weight:800;color:var(--plum-d);background:var(--plum-l);padding:1px 6px;border-radius:5px;margin-left:2px}
 .mcard-zero{opacity:.96;background:repeating-linear-gradient(135deg,#fff,#fff 14px,#FBF7F1 14px,#FBF7F1 28px)}
-.zeronote{margin-top:11px;font-size:12px;color:var(--ink-2);background:var(--paper-2);border-radius:8px;padding:8px 11px}
+.zeronote{margin-top:11px;font-size:var(--portal-fs-sub);color:var(--ink-2);background:var(--paper-2);border-radius:8px;padding:8px 11px}
 .mlink-av{display:inline-flex;align-items:center;gap:7px}
 .mlink-av .avwrap{flex:0 0 auto}
 /* modal head */
@@ -256,36 +262,36 @@ table.mx tbody th{background:var(--paper-2);text-align:right;padding:6px 7px;fon
 .shface .avwrap{border-width:3px}
 .themedot{display:block;width:46px;height:46px;border-radius:14px}
 .shtxt{min-width:0}
-.qgrp{margin:16px 0 6px;font-size:12px;font-weight:800;color:var(--plum);border-top:1px solid var(--line);padding-top:12px}
+.qgrp{margin:16px 0 6px;font-size:var(--portal-fs-sub);font-weight:800;color:var(--plum);border-top:1px solid var(--line);padding-top:12px}
 .qgrp:first-child{border:0;padding-top:0;margin-top:2px}
-.emptybox{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;font-size:13.5px;color:var(--ink);text-align:center;margin-top:6px}
+.emptybox{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;font-size:var(--portal-fs-sub);color:var(--ink);text-align:center;margin-top:6px}
 /* QA expand */
-.qa-yes{font-size:10px;font-weight:800;color:#fff;background:var(--good);padding:1px 7px;border-radius:5px}
-.qa-sum{font-size:10px;font-weight:800;color:#fff;background:#9aa0a6;padding:1px 7px;border-radius:5px}
-.qexp{appearance:none;border:1px solid var(--line-2);background:#fff;color:var(--plum);font:inherit;font-size:11.5px;font-weight:700;padding:4px 11px;border-radius:8px;cursor:pointer;margin-top:8px}
+.qa-yes{font-size:var(--portal-fs-sub);font-weight:800;color:#fff;background:var(--good);padding:1px 7px;border-radius:5px}
+.qa-sum{font-size:var(--portal-fs-sub);font-weight:800;color:#fff;background:#9aa0a6;padding:1px 7px;border-radius:5px}
+.qexp{appearance:none;border:1px solid var(--line-2);background:#fff;color:var(--plum);font:inherit;font-size:var(--portal-fs-sub);font-weight:700;padding:4px 11px;border-radius:8px;cursor:pointer;margin-top:8px}
 .qexp:hover{background:var(--plum-l);border-color:var(--plum-l)}
 .qexp.open{background:var(--plum-l)}
 .qdetail{margin-top:10px;padding:13px 14px;background:var(--paper-2);border-radius:10px;border:1px solid var(--line)}
-.qa-q,.qa-a{display:flex;gap:9px;font-size:13px;line-height:1.65;margin:0 0 9px}
-.qa-atitle{display:flex;gap:9px;font-size:13px;line-height:1.6;margin:0 0 9px;font-weight:600;font-variant-numeric:tabular-nums}
+.qa-q,.qa-a{display:flex;gap:9px;font-size:var(--portal-fs-sub);line-height:1.65;margin:0 0 9px}
+.qa-atitle{display:flex;gap:9px;font-size:var(--portal-fs-sub);line-height:1.6;margin:0 0 9px;font-weight:600;font-variant-numeric:tabular-nums}
 .qa-atitle span:last-child{color:#6E5520;white-space:pre-wrap}
-.qa-o{display:flex;gap:9px;font-size:12.5px;line-height:1.6;margin:10px 0 4px;padding-top:10px;border-top:1px dashed var(--line-2)}
+.qa-o{display:flex;gap:9px;font-size:var(--portal-fs-sub);line-height:1.6;margin:10px 0 4px;padding-top:10px;border-top:1px dashed var(--line-2)}
 .qa-o span:last-child{color:var(--ink-2);white-space:pre-wrap}
 .qa-o b{color:var(--teal,#2c7a7b)}
 .qa-a{margin-bottom:7px}
 .qa-q span:last-child{color:var(--ink);white-space:pre-wrap}
 .qa-a span:last-child{color:var(--ink-2);white-space:pre-wrap}
 .qa-a b{color:var(--ink);font-weight:700}
-.qa-tag{flex:0 0 auto;width:24px;height:24px;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff}
+.qa-tag{flex:0 0 auto;width:24px;height:24px;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;font-size:var(--portal-fs-sub);font-weight:800;color:#fff}
 .qa-tag.tq{background:var(--plum)}
 .qa-tag.ta{background:#7E6226}
 .qa-tag.tb{background:#9A5E14}
 .qa-tag.to{background:#2c7a7b;width:auto;padding:0 7px}
-.qa-note{font-size:12.5px;color:var(--ink-2);line-height:1.6;margin-bottom:10px}
-.qcellhead{font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.5;margin-bottom:4px}
-.qa-prov{font-size:11px;color:var(--muted);margin-top:10px}
+.qa-note{font-size:var(--portal-fs-sub);color:var(--ink-2);line-height:1.6;margin-bottom:10px}
+.qcellhead{font-size:var(--portal-fs-sub);font-weight:700;color:var(--ink);line-height:1.5;margin-bottom:4px}
+.qa-prov{font-size:var(--portal-fs-sub);color:var(--muted);margin-top:10px}
 .qa-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;border-top:1px dashed var(--line-2);padding-top:10px}
-.qa-link{font-size:12px;font-weight:700;color:var(--plum);text-decoration:none;background:#fff;border:1px solid var(--line-2);border-radius:7px;padding:5px 11px}
+.qa-link{font-size:var(--portal-fs-sub);font-weight:700;color:var(--plum);text-decoration:none;background:#fff;border:1px solid var(--line-2);border-radius:7px;padding:5px 11px}
 .qa-link:hover{background:var(--plum);color:#fff;border-color:var(--plum)}
 
 /* 議会だより chips */
@@ -294,36 +300,37 @@ table.mx tbody th{background:var(--paper-2);text-align:right;padding:6px 7px;fon
 @media(max-width:480px){.bulletins{grid-template-columns:1fr}}
 .bchip{display:flex;flex-direction:column;gap:1px;text-decoration:none;border:1px solid var(--line-2);border-radius:10px;padding:10px 13px;background:#fff;transition:border-color .15s,transform .15s,box-shadow .15s}
 .bchip:hover{border-color:var(--plum);transform:translateY(-1px);box-shadow:var(--shadow)}
-.bchip .bn{font-weight:800;color:var(--plum);font-size:14px}
-.bchip .bs{font-size:12.5px;color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
-.bchip .bd{font-size:11px;color:var(--muted)}
+.bchip .bn{font-weight:800;color:var(--plum);font-size:var(--portal-fs-sub)}
+.bchip .bs{font-size:var(--portal-fs-sub);color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+.bchip .bd{font-size:var(--portal-fs-sub);color:var(--muted)}
 .inlink{color:var(--plum);font-weight:700}
-a.tlcap{text-decoration:none;color:var(--ink-2)}
+a.tlcap{text-decoration:none}
 a.tlcap:hover{color:var(--plum);text-decoration:underline}
 /* テーマ内訳 */
 .tbreak{background:var(--paper-2);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:14px}
-.tbreak-h{font-size:11.5px;font-weight:800;color:var(--ink-2);margin-bottom:9px;letter-spacing:.02em}
-.tb-row{display:grid;grid-template-columns:96px 1fr 28px;align-items:center;gap:10px;margin:5px 0;font-size:12.5px}
-.tb-name{font-weight:700;color:var(--ink);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tbreak-h{font-size:var(--portal-fs-sub);font-weight:800;color:var(--ink-2);margin-bottom:9px;letter-spacing:.02em}
+.tb-row{display:grid;grid-template-columns:96px 1fr 28px;align-items:center;gap:10px;margin:5px 0;font-size:var(--portal-fs-sub)}
+.tb-name{font-weight:700;color:var(--ink);cursor:pointer;overflow-wrap:anywhere;line-height:1.35}
 .tb-name:hover{color:var(--plum);text-decoration:underline}
 .tb-bar{background:#fff;border-radius:5px;height:14px;overflow:hidden;border:1px solid var(--line)}
 .tb-bar i{display:block;height:100%;border-radius:5px;min-width:2px}
 .tb-c{text-align:right;font-weight:700;color:var(--ink-2)}
-.tb-pct{color:var(--muted);font-weight:600;font-size:11px;margin-left:3px}
-.tb-unit{font-weight:600;font-size:10.5px;color:var(--ink-2);margin-left:1px}
-.tbreak-m .tb-row{grid-template-columns:7em 1fr 92px}
+.tb-pct{color:var(--muted);font-weight:600;font-size:var(--portal-fs-sub);margin-left:3px}
+.tb-unit{font-weight:600;font-size:var(--portal-fs-sub);color:var(--ink-2);margin-left:1px}
+.tbreak-m .tb-row{grid-template-columns:11em 1fr 92px}
+@media(max-width:520px){.tbreak-m .tb-row{grid-template-columns:1fr 92px;row-gap:2px}.tbreak-m .tb-name{grid-column:1/-1}}
 .tbreak-m .tb-name{cursor:pointer}
 
 footer{border-top:1px solid var(--line);background:var(--paper-2)}
-footer .wrap{padding:20px;font-size:12px;color:var(--muted);line-height:1.7}
+footer .wrap{padding:20px;font-size:var(--portal-fs-sub);color:var(--muted);line-height:1.7}
 footer b{color:var(--ink-2)}
 /* 位置づけの断り書き（config.json の site_notice。空なら出さない） */
 .topnotice{background:var(--paper-2);border-bottom:1px solid var(--line)}
-.topnotice p{margin:0 auto;padding:7px 20px;font-size:12px;color:var(--ink-2);line-height:1.6}
+.topnotice p{margin:0 auto;padding:7px 20px;font-size:var(--portal-fs-sub);color:var(--ink-2);line-height:1.6}
 .topnotice:has(p:empty){display:none}
 .topnotice .toplink{display:inline-block;margin-right:1em;font-weight:700;color:var(--plum);text-decoration:none;white-space:nowrap}
 .topnotice .toplink:hover{text-decoration:underline}
-.sheet .shnotice{margin:0;padding:7px 22px;font-size:11.5px;color:var(--ink-2);background:var(--paper-2);border-bottom:1px solid var(--line);line-height:1.6}
+.sheet .shnotice{margin:0;padding:7px 22px;font-size:var(--portal-fs-sub);color:var(--ink-2);background:var(--paper-2);border-bottom:1px solid var(--line);line-height:1.6}
 .fnotice{margin:0 0 8px;color:var(--ink-2);font-weight:600}
 .shnotice:empty,.fnotice:empty{display:none}
 </style>
@@ -354,13 +361,13 @@ footer b{color:var(--ink-2)}
   <div class="grid2" style="margin-top:22px">
     <div class="card">
       <h2 class="sec" style="margin-top:0">テーマ別の質問数</h2>
-      <p class="lead" style="margin:-2px 0 12px;font-size:12px">バーをクリックすると、そのテーマの全質問と発言議員が表示されます。件数は<b>主テーマ（1問1テーマ）</b>で数えています。複数の分野にまたがる質問には<b>副テーマ</b>を併記し、絞り込み・検索では副テーマでも拾えます（件数には含みません）。</p>
+      <p class="lead" style="margin:-2px 0 12px">バーをクリックすると、そのテーマの全質問と発言議員が表示されます。件数は<b>主テーマ（1問1テーマ）</b>で数えています。複数の分野にまたがる質問には<b>副テーマ</b>を併記し、絞り込み・検索では副テーマでも拾えます（件数には含みません）。</p>
       <div id="themeBars"></div>
     </div>
     <div class="card">
       <h2 class="sec" style="margin:0 0 6px">定例会ごとの質問数</h2>
       <div class="tl" id="sessionTL"></div>
-      <p class="lead" style="margin:14px 0 0;font-size:12px">下部の薄い色は「議会だより未掲載」の質問数（3問以上で〇のつかなかったもの）。</p>
+      <p class="lead" style="margin:14px 0 0">棒の右端の薄い色は「議会だより未掲載」の質問数（3問以上で〇のつかなかったもの）。</p>
     </div>
   </div>
 
@@ -368,7 +375,7 @@ footer b{color:var(--ink-2)}
     <h2 class="sec" style="margin-top:0">議会だより 各号（出典・PDF）</h2>
     <p class="lead">本ダッシュボードは、下記の議会だより各号に掲載された一般質問をもとにしています。号をクリックするとPDFが開きます。議会だよりは年4回発行され、町内全戸に配布されています。</p>
     <div class="bulletins" id="bulletinList"></div>
-    <p class="lead" style="margin:14px 0 0;font-size:12px">▶ <a class="inlink" id="bulletinIndexLink" href="#" target="_blank" rel="noopener">議会だより一覧ページ（__TOWN_SHORT__公式サイト）</a></p>
+    <p class="lead" style="margin:14px 0 0">▶ <a class="inlink" id="bulletinIndexLink" href="#" target="_blank" rel="noopener">議会だより一覧ページ（__TOWN_SHORT__公式サイト）</a></p>
   </div>
 
   <div class="note">
@@ -464,8 +471,9 @@ const seatIdx=m=>ROSTER_BY[m]?ROSTER_BY[m].seat:99;
 function initials(m){return m.replace(/\s/g,'').slice(0,1);}
 function avatar(m,size){
   const info=ROSTER_BY[m]||{};const s=size||44;
-  const init=initials(m);const fz=Math.round(s*0.42);
-  const fb=`<span class=\"avfb\" style=\"font-size:${fz}px\">${init}</span>`;
+  // 頭文字の大きさは写真の大きさに応じて共通の部品のトークンから選ぶ（14px より小さくしない）
+  const init=initials(m);const fz=s<40?'avfb-s':s<60?'avfb-m':'avfb-l';
+  const fb=`<span class=\"avfb ${fz}\">${init}</span>`;
   if(!info.photo)return `<span class=\"avwrap\" style=\"width:${s}px;height:${s}px\">${fb}</span>`;
   return `<span class=\"avwrap\" style=\"width:${s}px;height:${s}px\">${fb}<img class=\"av\" src=\"${info.photo}\" alt=\"${m}\" loading=\"lazy\" onerror=\"this.style.display='none'\"></span>`;
 }
@@ -489,7 +497,7 @@ function renderOverview(){
     {v:sessions.length,s:'回',l:'対象の定例会',x:periodLabel()},
     {v:pub,s:'問',l:'議会だより掲載',x:'未掲載 '+(total-pub)+'問（〇印なし）'},
   ];
-  $('#statcards').innerHTML=cards.map(c=>`<div class="stat"><div class="v num">${c.v}<small>${c.s}</small></div><div class="l">${c.l}</div><div class="x">${c.x}</div></div>`).join('');
+  $('#statcards').innerHTML=cards.map(c=>`<div class="stat"><div class="v num">${c.v}<span class="u">${c.s}</span></div><div class="l">${c.l}</div><div class="x">${c.x}</div></div>`).join('');
 
   // theme bars（件数の多い順・割合つき）
   const tc=groupCount(R,'theme');
@@ -506,10 +514,10 @@ function renderOverview(){
   const maxS=Math.max(...sessions.map(i=>R.filter(r=>r.issue===i).length));
   $('#sessionTL').innerHTML=sessions.map(i=>{
     const rs=R.filter(r=>r.issue===i);const n=rs.length;const np=rs.filter(r=>!r.published).length;
-    const h=n/maxS*130;const ph=np/n*100;
-    return `<div class="tlcol"><span class="tlnum num">${n}</span>
-      <div class="tlbar" style="height:${h}px" title="${sessLabel(i)}：${n}問（未掲載${np}）"><div class="pub" style="height:${ph}%"></div></div>
-      <a class="tlcap" href="${ISSUE[i].bulletin}" target="_blank" rel="noopener" title="第${i}号PDFを開く">第${i}号<br>${sessShort(i)}</a></div>`;
+    const ph=np/n*100;
+    return `<div class="tlrow"><a class="tlcap" href="${ISSUE[i].bulletin}" target="_blank" rel="noopener" title="第${i}号PDFを開く">第${i}号 ${sessShort(i)}</a>
+      <div class="tltrack"><div class="tlbar" style="width:${n/maxS*100}%" title="${sessLabel(i)}：${n}問（未掲載${np}）"><div class="pub" style="width:${ph}%"></div></div></div>
+      <span class="tlnum num">${n}</span></div>`;
   }).join('');
 
   // 議会だより 各号
@@ -541,7 +549,7 @@ function renderMembers(){
     if(n===0){
       return `<div class="mcard mcard-zero" data-m="${m}">
         <div class="mh"><div class="mid">${avatar(m,46)}<div><div class="mn">${m} ${roleBadge(m)}</div><div class="mk">${info.kana}・議席番号${info.seat}・${info.terms}期</div></div></div>
-        <div class="mtot num" style="color:var(--muted)">0<small> 問</small></div></div>
+        <div class="mtot num" style="color:var(--muted)">0<span class="u"> 問</span></div></div>
         <div class="zeronote">${info.note||'一般質問の記録なし'}</div></div>`;
     }
     const tc=groupCount(rs,'theme');
@@ -550,7 +558,7 @@ function renderMembers(){
       .map(([t,c])=>`<span class="chip" style="border-left:3px solid ${TCOLOR[t]}">${t} ${c}</span>`).join('');
     return `<div class="mcard" data-m="${m}">
       <div class="mh"><div class="mid">${avatar(m,46)}<div><div class="mn">${m} ${roleBadge(m)}</div><div class="mk">${info.kana}・議席番号${info.seat}・${info.terms}期</div></div></div>
-      <div class="mtot num">${n}<small> 問</small></div></div>
+      <div class="mtot num">${n}<span class="u"> 問</span></div></div>
       <div class="kaiha"><span class="kdot"></span>${kaiha}${isRep?'<span class="reptag">代表</span>':''}</div>
       <div class="stack">${segs}</div>
       <div class="chips">${top}</div></div>`;
@@ -688,7 +696,7 @@ function openMember(m){
   $('#shFace').innerHTML=avatar(m,72);
   if(n===0){
     $('#shStats').innerHTML=`<div><b class="num">0</b>一般質問</div>`;
-    $('#shBody').innerHTML=`<div class="emptybox">${info.note||'この任期では一般質問の記録がありません。'}${info.role==='議長'?'<br><span style="color:var(--ink-2);font-size:12.5px">議長は議事を主宰する立場のため、慣例として一般質問には立ちません。</span>':''}</div>`;
+    $('#shBody').innerHTML=`<div class="emptybox">${info.note||'この任期では一般質問の記録がありません。'}${info.role==='議長'?'<br><span style="color:var(--ink-2)">議長は議事を主宰する立場のため、慣例として一般質問には立ちません。</span>':''}</div>`;
     openModal();return;
   }
   const tc=groupCount(rs,'theme');const topT=Object.entries(tc).sort((a,b)=>b[1]-a[1])[0];
