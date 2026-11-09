@@ -167,6 +167,18 @@ table.mx tbody th{background:var(--paper-2);text-align:right;padding:6px 7px;fon
 .qtable{width:100%;border-collapse:collapse;font-size:var(--portal-fs-sub)}
 .qtable th{text-align:left;font-size:var(--portal-fs-sub);color:var(--muted);font-weight:700;letter-spacing:.04em;padding:8px 10px;border-bottom:2px solid var(--line-2);position:sticky;top:53px;background:var(--paper);cursor:pointer;white-space:nowrap}
 .qtable th:hover{color:var(--plum)}
+/* 列の見出しの並べ替え。押せることが分かるように向きの印を付ける */
+.thsort{appearance:none;border:0;background:transparent;font:inherit;font-size:var(--portal-fs-sub);font-weight:700;color:inherit;letter-spacing:inherit;padding:0;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+.thsort .sarr{color:var(--muted)}
+.qtable th[aria-sort] .thsort{color:var(--plum)}
+.qtable th[aria-sort] .sarr{color:var(--plum)}
+/* 質問一覧の並びの向き（新しい順／古い順） */
+.ordbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 12px}
+.ordlab{font-size:var(--portal-fs-sub);color:var(--ink-2);font-weight:600}
+.ordbtn{appearance:none;font:inherit;font-size:var(--portal-fs-sub);font-weight:700;padding:6px 13px;border:1px solid var(--line-2);border-radius:999px;background:#fff;color:var(--ink-2);cursor:pointer}
+.ordbtn:hover{border-color:var(--plum);color:var(--plum)}
+.ordbtn[aria-pressed="true"]{background:var(--plum);border-color:var(--plum);color:#fff}
+.ordnote{font-size:var(--portal-fs-sub);color:var(--ink-2)}
 .qtable td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
 .qtable tr:hover td{background:#fff}
 .qt-text{max-width:480px}
@@ -401,14 +413,20 @@ footer b{color:var(--ink-2)}
     <select id="fPub" aria-label="掲載・未掲載で絞り込み"><option value="">掲載・未掲載すべて</option><option value="1">掲載のみ</option><option value="0">未掲載のみ</option></select>
     <span class="tcount" id="tcount"></span>
   </div>
+  <div class="ordbar" id="qOrder" role="group" aria-label="号の並びの向き">
+    <span class="ordlab">号の並び：</span>
+    <button class="ordbtn" type="button" data-dir="-1" aria-pressed="true">新しい順</button>
+    <button class="ordbtn" type="button" data-dir="1" aria-pressed="false">古い順</button>
+    <span class="ordnote" id="qOrderNote" hidden></span>
+  </div>
   <table class="qtable" id="qtable">
     <thead><tr>
-      <th data-k="issue">号 / 定例会</th>
-      <th data-k="member">議員</th>
-      <th data-k="text">質問内容</th>
-      <th data-k="theme">テーマ</th>
-      <th data-k="published">掲載</th>
-      <th data-k="page">頁</th>
+      <th data-k="issue"><button class="thsort" type="button">号 / 定例会<span class="sarr" aria-hidden="true"></span></button></th>
+      <th data-k="member"><button class="thsort" type="button">議員<span class="sarr" aria-hidden="true"></span></button></th>
+      <th data-k="text"><button class="thsort" type="button">質問内容<span class="sarr" aria-hidden="true"></span></button></th>
+      <th data-k="theme"><button class="thsort" type="button">テーマ<span class="sarr" aria-hidden="true"></span></button></th>
+      <th data-k="published"><button class="thsort" type="button">掲載<span class="sarr" aria-hidden="true"></span></button></th>
+      <th data-k="page"><button class="thsort" type="button">頁<span class="sarr" aria-hidden="true"></span></button></th>
     </tr></thead>
     <tbody id="qbody"></tbody>
   </table>
@@ -460,8 +478,10 @@ function avatar(m,size){
 }
 function roleBadge(m){const i=ROSTER_BY[m]||{};return i.role?`<span class="rolebadge">${i.role}</span>`:'';}
 
-// sessions sorted
+// sessions sorted（古い順。推移を見る図と期間の計算に使う）
 const sessions=[...new Set(R.map(r=>r.issue))].sort((a,b)=>a-b);
+// 一覧に使う新しい順（号の大きい順）
+const sessionsDesc=sessions.slice().reverse();
 const ISSUE={};R.forEach(r=>{if(!ISSUE[r.issue])ISSUE[r.issue]={issue:r.issue,session:r.session,pub:r.pub_date,bulletin:r.bulletin,minutes:r.minutes,video:r.video_issue};});
 const sessLabel=i=>{const r=R.find(x=>x.issue===i);return r.session;};
 const sessShort=i=>{const r=R.find(x=>x.issue===i);const m=r.session.match(/令和(\d+)年(\d+)月/);return m?`R${m[1]}.${m[2].padStart(2,'0')}`:r.session.replace('定例会議','').replace('定例会','').replace('令和','R').replace('年','.').replace('月','');};
@@ -501,9 +521,9 @@ function renderOverview(){
       <span class="tlnum num">${n}</span></div>`;
   }).join('');
 
-  // 議会だより 各号
+  // 議会だより 各号（一覧なので新しい号から。上の「定例会ごとの質問数」は推移を見る図なので古い順のまま）
   const fmtPub=s=>{const m=s.split('-');return `${m[0]}.${parseInt(m[1])}`;};
-  $('#bulletinList').innerHTML=sessions.map(i=>{
+  $('#bulletinList').innerHTML=sessionsDesc.map(i=>{
     const it=ISSUE[i];
     return `<a class="bchip" href="${it.bulletin}" target="_blank" rel="noopener">
       <span class="bn">第${i}号</span><span class="bs">${it.session}</span><span class="bd">発行 ${fmtPub(it.pub)}　PDF ↗</span></a>`;
@@ -578,7 +598,7 @@ function renderMatrix(){
 }
 
 /* ---------- TABLE ---------- */
-let sortKey='issue',sortDir=1;
+let sortKey='issue',sortDir=-1;  // 既定は号の新しい順。同じ号の中は発言順のまま
 function kaihaShort(m){const i=ROSTER_BY[m]||{};return (i.kaiha||'').replace('（会派代表）','');}
 function fillSelects(){
   const ms=members.map(m=>`<option value="${m}">${m}</option>`).join('');
@@ -587,7 +607,7 @@ function fillSelects(){
   const kaihas=[...new Set(members.map(kaihaShort))].sort((a,b)=>a.localeCompare(b,'ja'));
   $('#fKaiha').insertAdjacentHTML('beforeend',kaihas.map(k=>`<option value="${k}">${k}（${kaihaCount[k]}名）</option>`).join(''));
   $('#fTheme').insertAdjacentHTML('beforeend',TORDER.map(t=>`<option value="${t}">${t}</option>`).join(''));
-  $('#fSession').insertAdjacentHTML('beforeend',sessions.map(i=>`<option value="${i}">第${i}号 ${sessLabel(i)}</option>`).join(''));
+  $('#fSession').insertAdjacentHTML('beforeend',sessionsDesc.map(i=>`<option value="${i}">第${i}号 ${sessLabel(i)}</option>`).join(''));
 }
 // 議員×テーマ表のセル：テーマ色を白地に op の割合で重ねた背景と、それに対して 4.5:1 以上になる文字色（白か濃い色）
 function mxColors(hex,op){const h=hex.replace('#','');const c=[0,2,4].map(i=>parseInt(h.slice(i,i+2),16));const mix=c.map(v=>Math.round(v*op+255*(1-op)));
@@ -652,9 +672,11 @@ function renderTable(){
     let x=a[sortKey],y=b[sortKey];
     if(sortKey==='member'){x=seatIdx(a.member);y=seatIdx(b.member);}
     if(x<y)return -1*sortDir;if(x>y)return 1*sortDir;
-    return (a.order-b.order)||(a.q_num-b.q_num);
+    // 号以外の列で並べたとき、同じ値の中は新しい号から。同じ号の中は発言順・質問番号順
+    return (b.issue-a.issue)||(a.order-b.order)||(a.q_num-b.q_num);
   });
   $('#tcount').textContent=rows.length+' 件';
+  updateSortMarks();
   $('#qbody').innerHTML=rows.map(r=>`<tr>
     <td><b class="num">第${r.issue}号</b><br><span class="pg">${r.session}</span></td>
     <td><span class="mlink mlink-av" data-m="${r.member}">${avatar(r.member,26)}<span>${r.member}</span></span></td>
@@ -665,12 +687,24 @@ function renderTable(){
   </tr>`).join('');
   $$('#qbody .mlink').forEach(el=>el.onclick=()=>openMember(el.dataset.m));
 }
+// 並びの向きの印：列の見出しに aria-sort と矢印、表の上の切り替えに aria-pressed
+function updateSortMarks(){
+  $$('#qtable thead th').forEach(th=>{
+    const on=th.dataset.k===sortKey;
+    if(on)th.setAttribute('aria-sort',sortDir>0?'ascending':'descending');else th.removeAttribute('aria-sort');
+    th.querySelector('.sarr').textContent=on?(sortDir>0?'▲':'▼'):'▲▼';
+  });
+  $$('#qOrder .ordbtn').forEach(b=>b.setAttribute('aria-pressed',String(sortKey==='issue'&&Number(b.dataset.dir)===sortDir)));
+  const note=$('#qOrderNote');
+  const lab={member:'議員（議席番号）',text:'質問内容',theme:'テーマ',published:'掲載',page:'頁'}[sortKey];
+  if(lab){note.textContent=`いまは「${lab}」の列で並べています。`;note.hidden=false;}else{note.textContent='';note.hidden=true;}
+}
 function escapeHtml(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
 
 /* ---------- MODALS ---------- */
 function openMember(m){
   const info=ROSTER_BY[m]||{};
-  const rs=R.filter(r=>r.member===m).sort((a,b)=>a.issue-b.issue||a.q_num-b.q_num);
+  const rs=R.filter(r=>r.member===m).sort((a,b)=>b.issue-a.issue||a.q_num-b.q_num);  // 新しい号から。号の中は質問の番号順
   const n=rs.length;const pub=rs.filter(r=>r.published).length;
   $('#shTitle').innerHTML=`${m} ${info.role?'<span class="rolebadge rolebadge-lg">'+info.role+'</span>':''}`;
   $('#shKana').innerHTML=`${info.kana}　｜　議席番号${info.seat}・${info.terms}期　｜　${info.kaiha}${info.note?'　｜　'+info.note:''}`;
@@ -699,7 +733,7 @@ function openMember(m){
   openModal();
 }
 function openTheme(t){
-  const rs=R.filter(r=>r.theme===t).sort((a,b)=>a.issue-b.issue);
+  const rs=R.filter(r=>r.theme===t).sort((a,b)=>b.issue-a.issue);  // 新しい号から。号の中はデータの順のまま
   const n=rs.length;const mc=groupCount(rs,'member');
   $('#shFace').innerHTML=`<span class="themedot" style="background:${TCOLOR[t]}"></span>`;
   $('#shTitle').textContent=t;$('#shKana').textContent='テーマ別の質問一覧';
@@ -719,7 +753,7 @@ function openTheme(t){
     html+=qItemHtml(r,true);
   });
   // 副テーマでこのテーマにまたがる質問。上の件数には含めず、別掲で動線だけ確保する。
-  const sub=R.filter(r=>subsOf(r).includes(t)).sort((a,b)=>a.issue-b.issue||a.order-b.order);
+  const sub=R.filter(r=>subsOf(r).includes(t)).sort((a,b)=>b.issue-a.issue||a.order-b.order);
   if(sub.length){
     html+=`<div class="qgrp qgrp-sub">副テーマとして${t}にまたがる質問（${sub.length}件）<span class="qgrp-note">主たる分野は別のテーマとして数えています。上の件数には含みません。</span></div>`;
     sub.forEach(r=>{html+=qItemHtml(r,true);});
@@ -783,8 +817,13 @@ $('#memberSort').addEventListener('click',e=>{
 ['q','fMember','fKaiha','fTheme','fSession','fPub'].forEach(id=>{
   document.addEventListener('input',e=>{if(e.target.id===id)renderTable();});
 });
-$$('#qtable thead th').forEach(th=>th.onclick=()=>{
-  const k=th.dataset.k;if(sortKey===k)sortDir*=-1;else{sortKey=k;sortDir=1;}renderTable();
+$$('#qtable thead th').forEach(th=>th.querySelector('.thsort').onclick=()=>{
+  const k=th.dataset.k;if(sortKey===k)sortDir*=-1;else{sortKey=k;sortDir=(k==='issue'?-1:1);}renderTable();
+});
+// 号の並びの向き（新しい順／古い順）
+$('#qOrder').addEventListener('click',e=>{
+  const b=e.target.closest('.ordbtn');if(!b)return;
+  sortKey='issue';sortDir=Number(b.dataset.dir);renderTable();
 });
 $('#qbody').addEventListener('click',e=>{
   const b=e.target.closest('.qexp-t');if(!b)return;
