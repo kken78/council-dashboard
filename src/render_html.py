@@ -379,7 +379,7 @@ footer b{color:var(--ink-2)}
     <div class="card">
       <h2 class="sec" style="margin:0 0 6px">定例会ごとの質問数</h2>
       <div class="tl" id="sessionTL"></div>
-      <p class="lead" style="margin:14px 0 0">棒の右端の薄い色は「議会だより未掲載」の質問数（3問以上で〇のつかなかったもの）。</p>
+      <p class="lead" style="margin:14px 0 0">右端の薄い色の部分は、議会だよりに本文が載っていない質問の数です。議会だよりは、1人の質問が3つ以上あるとき、〇の付いた番号の質問と答弁だけを載せています。</p>
     </div>
   </div>
 
@@ -515,7 +515,7 @@ function renderOverview(){
     {v:total,s:'問',l:'一般質問の総数',x:'任期中に行われた全質問'},
     {v:META.seats,s:'名',l:'議員定数',x:'うち議長は質問に立たない慣例'},
     {v:sessions.length,s:'回',l:'対象の定例会',x:periodLabel()},
-    {v:pub,s:'問',l:'議会だより掲載',x:'未掲載 '+(total-pub)+'問（〇印なし）'},
+    {v:pub,s:'問',l:'議会だより掲載',x:'未掲載 '+(total-pub)+'問（題名だけ掲載）'},
   ];
   $('#statcards').innerHTML=cards.map(c=>`<div class="stat"><div class="v num">${c.v}<span class="u">${c.s}</span></div><div class="l">${c.l}</div><div class="x">${c.x}</div></div>`).join('');
 
@@ -655,7 +655,7 @@ function qaDetail(r){
   }else if(r.published){
     inner+=`<div class="qa-note">この質問の〈問・答〉は順次収録中です。やりとりの全文は会議録でご確認いただけます。</div>`;
   }else{
-    inner+=`<div class="qa-note"><b>議会だより本文には未掲載の質問です</b>（3問以上で〇のつかなかったもの）。題名は<b>一般質問一覧表（目次・P.8）</b>に記載されていますが、〈問・答〉の本文はどの本文ページにも掲載されていません。やりとりの全文は会議録・録画でご確認いただけます。</div>`;
+    inner+=`<div class="qa-note"><b>議会だより本文には未掲載の質問です</b>。議会だよりは、1人の質問が3つ以上あるとき、〇の付いた番号の質問と答弁だけを載せています。題名は<b>一般質問一覧表（目次・P.8）</b>に記載されていますが、〈問・答〉の本文はどの本文ページにも掲載されていません。やりとりの全文は会議録・録画でご確認いただけます。</div>`;
   }
   const links=[];
   if(r.bulletin){
