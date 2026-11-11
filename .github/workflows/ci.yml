@@ -19,18 +19,12 @@ jobs:
       - name: ビルド
         run: python build.py
 
-      # 文字の大きさは hino-portal DESIGN.md 5.2（docs/DESIGN_REVIEW.md ADR-1）
-      # このページは共通の部品（見出し・ナビ・フッター）を写していない（hino-portal DESIGN.md 8章）。
-      # check.py が出す共通の部品の問題（<title> の形、portal-shared のブロックが無い）は除き、ほかの問題が1件でもあれば止める。
-      - name: 文字の大きさ（hino-portal の shared/check.py --fonts）
+      # hino-portal の共通の検査。このページは共通の部品（見出し・ナビ・フッター）を写していない（hino-portal DESIGN.md 8章）ので、
+      # --gikai で、8章で共通とした項目（文字の大きさの下限、位置づけの文、ポータルへの戻りリンク、文体、新しいタブの印）だけを確かめる（DESIGN.md 9.1）
+      - name: 文字の大きさと議会系の共通の決まり（hino-portal の shared/check.py --gikai）
         run: |
           git clone --depth 1 https://github.com/kken78/hino-portal.git /tmp/hino-portal
-          python3 /tmp/hino-portal/shared/check.py --fonts docs/index.html > /tmp/check.txt || true
-          cat /tmp/check.txt
-          grep -q '^docs/index.html' /tmp/check.txt
-          if grep '^  - ' /tmp/check.txt | grep -v -E '^  - (<title> の形が違う|portal-shared:(css|header|siblings|footer) のブロックが無い)'; then
-            echo "文字の大きさの問題がある"; exit 1
-          fi
+          python3 /tmp/hino-portal/shared/check.py --gikai docs/index.html
 
       - uses: actions/setup-node@v7
         with:
@@ -43,3 +37,7 @@ jobs:
           npx playwright install --with-deps chromium
           cd "$GITHUB_WORKSPACE"
           PLAYWRIGHT_MODULE=/tmp/pw/node_modules/playwright/index.mjs node /tmp/hino-portal/shared/check_mobile.mjs docs/index.html
+
+      # 質問数で議員を序列化していないこと（docs/EDITORIAL_POLICY.md 1。hino-portal DESIGN.md 9.1）
+      - name: 議員を質問数で並べていないこと（scripts/check_editorial.mjs）
+        run: PLAYWRIGHT_MODULE=/tmp/pw/node_modules/playwright/index.mjs node scripts/check_editorial.mjs docs/index.html
