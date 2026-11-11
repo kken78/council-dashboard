@@ -379,7 +379,7 @@ footer b{color:var(--ink-2)}
     <div class="card">
       <h2 class="sec" style="margin:0 0 6px">定例会ごとの質問数</h2>
       <div class="tl" id="sessionTL"></div>
-      <p class="lead" style="margin:14px 0 0">棒の右端の薄い色は「議会だより未掲載」の質問数（3問以上で〇のつかなかったもの）。</p>
+      <p class="lead" style="margin:14px 0 0">右端の薄い色の部分は、「議会だより未掲載」の質問数（3問以上で〇のつかなかったもの）。</p>
     </div>
   </div>
 
