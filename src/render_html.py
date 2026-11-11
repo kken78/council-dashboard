@@ -387,7 +387,7 @@ footer b{color:var(--ink-2)}
     <h2 class="sec" style="margin-top:0">議会だより 各号（出典・PDF）</h2>
     <p class="lead">本ダッシュボードは、下記の議会だより各号に掲載された一般質問をもとにしています。号をクリックするとPDFが開きます。議会だよりは年4回発行され、町内全戸に配布されています。</p>
     <div class="bulletins" id="bulletinList"></div>
-    <p class="lead" style="margin:14px 0 0">▶ <a class="inlink" id="bulletinIndexLink" href="#" target="_blank" rel="noopener">議会だより一覧ページ（__TOWN_SHORT__公式サイト）</a></p>
+    <p class="lead" style="margin:14px 0 0">▶ <a class="inlink" id="bulletinIndexLink" href="#">議会だより一覧ページ（__TOWN_SHORT__公式サイト）</a></p>
   </div>
 
   <div class="note">
@@ -469,7 +469,7 @@ footer b{color:var(--ink-2)}
 <footer><div class="wrap">
   <p class="fnotice">__NOTICE__</p>
   出典：<b>__SOURCE__</b>（__SESSION_RANGE__／発行 __PUB_RANGE__）。〈問・答〉は議会だより掲載のままの原文（改行再現）です。正確な質疑・答弁は各号の本文または会議録をご参照ください。本ダッシュボードは議会だより等の公開情報を、有権者・議員・役場の参考に供する目的で整理したものです。写真は公式サイトの画像を参照表示しており、ネットワーク非接続時は氏名表示に切り替わります。
-  <br><b>最終更新：__BUILD_DATE__</b>　／　オープンデータ（CSV・JSON）：data/ ディレクトリ　／　ライセンス：プログラム MIT・データの構造 CC BY 4.0・議会だよりなどから転記した文章と議員の写真は対象外（<a class="inlink" href="https://github.com/kken78/council-dashboard/blob/main/LICENSE-DATA.md" target="_blank" rel="noopener">LICENSE-DATA.md</a>）__PORTAL_LINK__
+  <br><b>最終更新：__BUILD_DATE__</b>　／　オープンデータ（CSV・JSON）：data/ ディレクトリ　／　ライセンス：プログラム MIT・データの構造 CC BY 4.0・議会だよりなどから転記した文章と議員の写真は対象外（<a class="inlink" href="https://github.com/kken78/council-dashboard/blob/main/LICENSE-DATA.md">LICENSE-DATA.md</a>）__PORTAL_LINK__
 </div></footer>
 
 <script>
